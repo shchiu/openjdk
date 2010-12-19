@@ -1,0 +1,7695 @@
+@ Copyright 2009, 2010 Edward Nevill
+@ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+@
+@ This code is free software; you can redistribute it and/or modify it
+@ under the terms of the GNU General Public License version 2 only, as
+@ published by the Free Software Foundation.
+@
+@ This code is distributed in the hope that it will be useful, but WITHOUT
+@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@ version 2 for more details (a copy is included in the LICENSE file that
+@ accompanied this code).
+@
+@ You should have received a copy of the GNU General Public License version
+@ 2 along with this work; if not, write to the Free Software Foundation,
+@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+
+#ifdef SHARK
+#define DISABLE_NOTICE_SAFEPOINTS
+#endif
+
+#ifndef DISABLE_HW_FP
+#define HW_FP
+#endif
+#ifndef DISABLE_NOTICE_SAFEPOINTS
+#define NOTICE_SAFEPOINTS
+#endif
+#ifndef DISABLE_FAST_BYTECODES
+#define FAST_BYTECODES
+#endif
+
+nop                  = 0x00, 1
+aconst_null          = 0x01, 1
+iconst_m1            = 0x02, 1
+iconst_0             = 0x03, 1
+iconst_1             = 0x04, 1
+iconst_2             = 0x05, 1
+iconst_3             = 0x06, 1
+iconst_4             = 0x07, 1
+iconst_5             = 0x08, 1
+lconst_0             = 0x09, 1
+lconst_1             = 0x0a, 1
+fconst_0             = 0x0b, 1
+fconst_1             = 0x0c, 1
+fconst_2             = 0x0d, 1
+dconst_0             = 0x0e, 1
+dconst_1             = 0x0f, 1
+bipush               = 0x10, 2
+sipush               = 0x11, 3
+ldc                  = 0x12, 2
+ldc_w                = 0x13, 3
+ldc2_w               = 0x14, 3
+iload                = 0x15, 2
+lload                = 0x16, 2
+fload                = 0x17, 2
+dload                = 0x18, 2
+aload                = 0x19, 2
+iload_0              = 0x1a, 1
+iload_1              = 0x1b, 1
+iload_2              = 0x1c, 1
+iload_3              = 0x1d, 1
+lload_0              = 0x1e, 1
+lload_1              = 0x1f, 1
+lload_2              = 0x20, 1
+lload_3              = 0x21, 1
+fload_0              = 0x22, 1
+fload_1              = 0x23, 1
+fload_2              = 0x24, 1
+fload_3              = 0x25, 1
+dload_0              = 0x26, 1
+dload_1              = 0x27, 1
+dload_2              = 0x28, 1
+dload_3              = 0x29, 1
+aload_0              = 0x2a, 1
+aload_1              = 0x2b, 1
+aload_2              = 0x2c, 1
+aload_3              = 0x2d, 1
+iaload               = 0x2e, 1
+laload               = 0x2f, 1
+faload               = 0x30, 1
+daload               = 0x31, 1
+aaload               = 0x32, 1
+baload               = 0x33, 1
+caload               = 0x34, 1
+saload               = 0x35, 1
+istore               = 0x36, 2
+lstore               = 0x37, 2
+fstore               = 0x38, 2
+dstore               = 0x39, 2
+astore               = 0x3a, 2
+istore_0             = 0x3b, 1
+istore_1             = 0x3c, 1
+istore_2             = 0x3d, 1
+istore_3             = 0x3e, 1
+lstore_0             = 0x3f, 1
+lstore_1             = 0x40, 1
+lstore_2             = 0x41, 1
+lstore_3             = 0x42, 1
+fstore_0             = 0x43, 1
+fstore_1             = 0x44, 1
+fstore_2             = 0x45, 1
+fstore_3             = 0x46, 1
+dstore_0             = 0x47, 1
+dstore_1             = 0x48, 1
+dstore_2             = 0x49, 1
+dstore_3             = 0x4a, 1
+astore_0             = 0x4b, 1
+astore_1             = 0x4c, 1
+astore_2             = 0x4d, 1
+astore_3             = 0x4e, 1
+iastore              = 0x4f, 1
+lastore              = 0x50, 1
+fastore              = 0x51, 1
+dastore              = 0x52, 1
+aastore              = 0x53, 1
+bastore              = 0x54, 1
+castore              = 0x55, 1
+sastore              = 0x56, 1
+pop                  = 0x57, 1
+pop2                 = 0x58, 1
+dup                  = 0x59, 1
+dup_x1               = 0x5a, 1
+dup_x2               = 0x5b, 1
+dup2                 = 0x5c, 1
+dup2_x1              = 0x5d, 1
+dup2_x2              = 0x5e, 1
+swap                 = 0x5f, 1
+iadd                 = 0x60, 1
+ladd                 = 0x61, 1
+fadd                 = 0x62, 1
+dadd                 = 0x63, 1
+isub                 = 0x64, 1
+lsub                 = 0x65, 1
+fsub                 = 0x66, 1
+dsub                 = 0x67, 1
+imul                 = 0x68, 1
+lmul                 = 0x69, 1
+fmul                 = 0x6a, 1
+dmul                 = 0x6b, 1
+idiv                 = 0x6c, 1
+ldiv                 = 0x6d, 1
+fdiv                 = 0x6e, 1
+ddiv                 = 0x6f, 1
+irem                 = 0x70, 1
+lrem                 = 0x71, 1
+frem                 = 0x72, 1
+drem                 = 0x73, 1
+ineg                 = 0x74, 1
+lneg                 = 0x75, 1
+fneg                 = 0x76, 1
+dneg                 = 0x77, 1
+ishl                 = 0x78, 1
+lshl                 = 0x79, 1
+ishr                 = 0x7a, 1
+lshr                 = 0x7b, 1
+iushr                = 0x7c, 1
+lushr                = 0x7d, 1
+iand                 = 0x7e, 1
+land                 = 0x7f, 1
+ior                  = 0x80, 1
+lor                  = 0x81, 1
+ixor                 = 0x82, 1
+lxor                 = 0x83, 1
+iinc                 = 0x84, 3
+i2l                  = 0x85, 1
+i2f                  = 0x86, 1
+i2d                  = 0x87, 1
+l2i                  = 0x88, 1
+l2f                  = 0x89, 1
+l2d                  = 0x8a, 1
+f2i                  = 0x8b, 1
+f2l                  = 0x8c, 1
+f2d                  = 0x8d, 1
+d2i                  = 0x8e, 1
+d2l                  = 0x8f, 1
+d2f                  = 0x90, 1
+i2b                  = 0x91, 1
+i2c                  = 0x92, 1
+i2s                  = 0x93, 1
+lcmp                 = 0x94, 1
+fcmpl                = 0x95, 1
+fcmpg                = 0x96, 1
+dcmpl                = 0x97, 1
+dcmpg                = 0x98, 1
+ifeq                 = 0x99, 0
+ifne                 = 0x9a, 0
+iflt                 = 0x9b, 0
+ifge                 = 0x9c, 0
+ifgt                 = 0x9d, 0
+ifle                 = 0x9e, 0
+if_icmpeq            = 0x9f, 0
+if_icmpne            = 0xa0, 0
+if_icmplt            = 0xa1, 0
+if_icmpge            = 0xa2, 0
+if_icmpgt            = 0xa3, 0
+if_icmple            = 0xa4, 0
+if_acmpeq            = 0xa5, 0
+if_acmpne            = 0xa6, 0
+goto                 = 0xa7, 0
+jsr                  = 0xa8, 0
+ret                  = 0xa9, 0
+tableswitch          = 0xaa, 0
+lookupswitch         = 0xab, 0
+ireturn              = 0xac, 0
+lreturn              = 0xad, 0
+freturn              = 0xae, 0
+dreturn              = 0xaf, 0
+areturn              = 0xb0, 0
+return               = 0xb1, 0
+getstatic            = 0xb2, 3
+putstatic            = 0xb3, 3
+getfield             = 0xb4, 3
+putfield             = 0xb5, 3
+invokevirtual        = 0xb6, 3
+invokespecial        = 0xb7, 3
+invokestatic         = 0xb8, 3
+invokeinterface      = 0xb9, 0
+new                  = 0xbb, 3
+newarray             = 0xbc, 2
+anewarray            = 0xbd, 3
+arraylength          = 0xbe, 1
+athrow               = 0xbf, 0
+checkcast            = 0xc0, 3
+instanceof           = 0xc1, 3
+monitorenter         = 0xc2, 1
+monitorexit          = 0xc3, 1
+wide                 = 0xc4, 1
+multianewarray       = 0xc5, 4
+ifnull               = 0xc6, 0
+ifnonnull            = 0xc7, 0
+goto_w               = 0xc8, 0
+jsr_w                = 0xc9, 0
+breakpoint           = 0xca, 0
+
+#ifdef FAST_BYTECODES
+
+@agetfield	= 0xcb, 3
+bgetfield	= 0xcc, 3
+cgetfield	= 0xcd, 3
+@dgetfield	= 0xce, 3
+@fgetfield	= 0xcf, 3
+igetfield	= 0xd0, 3
+lgetfield	= 0xd1, 3
+sgetfield	= 0xd2, 3
+
+aputfield	= 0xd3, 3
+bputfield	= 0xd4, 3
+cputfield	= 0xd5, 3
+@dputfield	= 0xd6, 3
+@fputfield	= 0xd7, 3
+iputfield	= 0xd8, 3
+lputfield	= 0xd9, 3
+@sputfield	= 0xda, 3
+
+iaccess_0	= 0xdb, 4
+iaccess_1	= 0xdc, 4
+iaccess_2	= 0xdd, 4
+iaccess_3	= 0xde, 4
+
+invokeresolved		= 0xdf, 3
+invokespecialresolved	= 0xe0, 3
+invokestaticresolved	= 0xe1, 3
+invokevfinal 		= 0xe2, 3
+
+iload_iload	= 0xe3, 4
+iload_iload_N	= 0xe4, 3
+
+@return_register_finalizer = 0xe5, 1
+
+iload_0_iconst_N        = 0xe7, 2
+iload_1_iconst_N        = 0xe8, 2
+iload_2_iconst_N        = 0xe9, 2
+iload_3_iconst_N        = 0xea, 2
+iload_iconst_N          = 0xeb, 3
+iadd_istore_N		= 0xec, 2
+isub_istore_N		= 0xed, 2
+iand_istore_N		= 0xee, 2
+ior_istore_N		= 0xef, 2
+ixor_istore_N		= 0xf0, 2
+iadd_u4store		= 0xf1, 3
+isub_u4store		= 0xf2, 3
+iand_u4store		= 0xf3, 3
+ior_u4store		= 0xf4, 3
+ixor_u4store		= 0xf5, 3
+iload_0_iload		= 0xf6, 3
+iload_1_iload		= 0xf7, 3
+iload_2_iload		= 0xf8, 3
+iload_3_iload		= 0xf9, 3
+iload_0_iload_N		= 0xfa, 2
+iload_1_iload_N		= 0xfb, 2
+iload_2_iload_N		= 0xfc, 2
+iload_3_iload_N		= 0xfd, 2
+
+#endif // FAST_BYTECODES
+
+return_register_finalizer = 0xe5, 1
+
+(nop) {
+	DISPATCH	\seq_len
+}
+
+(aconst_null,fconst_0) u4const_0 {
+	DISPATCH_START_R2
+        mov     lr, #0
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5) iconst_N {
+	sub	lr, r0, #opc_iconst_0
+	DISPATCH_START_R2
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(lconst_0,dconst_0) u8const_0 {
+	DISPATCH_START_R2
+        mov     tmp1, #0
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(lconst_1) lconst_1 {
+	DISPATCH_START_R2
+        mov     tmp2, #1
+	DISPATCH_NEXT
+        mov     tmp1, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(fconst_1) fconst_1 {
+	DISPATCH_START_R2
+        mov     tmp1, #0x3f800000
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(fconst_2) fconst_2 {
+	DISPATCH_START_R2
+        mov     r2, #0x40000000
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(dconst_1) dconst_1 {
+	DISPATCH_START_R2
+        mov     tmp1, #0x3f000000
+	DISPATCH_NEXT
+        orr     tmp1, tmp1, #0x00f00000
+	DISPATCH_NEXT
+        mov     tmp2, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(bipush) bipush {
+	DISPATCH_START	\seq_len
+	mov	tmp1, r2, lsl #24
+	DISPATCH_NEXT
+	mov	tmp1, tmp1, asr #24
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+@ r1 = [jpc, #2]
+(sipush) sipush {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	\seq_len
+	DISPATCH_NEXT
+	mov	r2, r2, lsl #24
+        orr     tmp1, r1, r2, asr #16
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,fload,aload) u4load {
+	DISPATCH_START	\seq_len
+	rsb	tmp1, r2, #0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(lload,dload) u8load {
+	DISPATCH_START	\seq_len
+	sub	r3, locals, r2, lsl #2
+	DISPATCH_NEXT
+	ldmda	r3, {tmp2, tmp1}
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(aload_0,aload_1,aload_2,aload_3) {
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3) {
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(fload_0,fload_1,fload_2,fload_3) {
+	rsb	tmp1, r0, #opc_fload_0
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(lload_0,dload_0) u8load_0 {
+	DISPATCH_START_R2
+        ldmda   locals, {tmp2-tmp1}
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lload_1,dload_1) u8load_1 {
+	DISPATCH_START_R2
+        ldmdb   locals, {tmp2-tmp1}
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lload_2,dload_2) u8load_2 {
+	DISPATCH_START_R2
+	ldr	tmp2, [locals, #-12]
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, #-8]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(lload_3,dload_3) u8load_3 {
+	DISPATCH_START_R2
+	ldr	tmp2, [locals, #-16]
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, #-12]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload) u4aload {
+	GET_STACK	1, r3
+	DISPATCH_START_R2_R0
+	POP	r2
+	DISPATCH_START_R2_JPC
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry5:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	DISPATCH_NEXT
+	ldr	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUT_STACK	0, tmp1
+	DISPATCH_FINISH
+}
+
+(laload,daload) u8aload {
+	GET_STACK	1, r3
+	DISPATCH_START_R2_R0
+	GET_STACK	0, r2
+	DISPATCH_START_R2_JPC
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry6:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #3
+	ldr	tmp2, [r3, #BASE_OFFSET_LONG]
+	DISPATCH_NEXT
+	ldr	tmp1, [r3, #20]
+	DISPATCH_NEXT
+	PUT_STACK	1, tmp1
+	PUT_STACK	0, tmp2
+	DISPATCH_FINISH
+}
+
+(baload) baload {
+	GET_STACK	1, r3
+	DISPATCH_START_R2_R0
+	POP	r2
+	DISPATCH_START_R2_JPC
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry7:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2
+	DISPATCH_NEXT
+	ldrsb	tmp1, [r3, #BASE_OFFSET_BYTE]
+	DISPATCH_NEXT
+	PUT_STACK	0, tmp1
+	DISPATCH_FINISH
+}
+
+(caload) caload {
+	GET_STACK	1, r3
+	DISPATCH_START_R2_R0
+	POP	r2
+	DISPATCH_START_R2_JPC
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry8:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #1
+	DISPATCH_NEXT
+	ldrh	tmp1, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_NEXT
+	PUT_STACK	0, tmp1
+	DISPATCH_FINISH
+}
+
+(saload) saload {
+	GET_STACK	1, r3
+	DISPATCH_START_R2_R0
+	POP	r2
+	DISPATCH_START_R2_JPC
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry9:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #1
+	DISPATCH_NEXT
+	ldrsh	tmp1, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_NEXT
+	PUT_STACK	0, tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(astore,istore,fstore) u4store {
+	DISPATCH_START	\seq_len
+	rsb	tmp1, r2, #0
+	DISPATCH_NEXT
+	POP	r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(lstore,dstore) u8store {
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	sub	r3, locals, r2, lsl #2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	stmda	r3, {tmp2, tmp1}
+	DISPATCH_FINISH
+}
+
+(astore_0,istore_0,fstore_0) u4store_0 {
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	POP	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        str     tmp1, [locals, #0]
+	DISPATCH_FINISH
+}
+
+(astore_1,istore_1,fstore_1) u4store_1 {
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	POP	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        str     tmp1, [locals, #-4]
+	DISPATCH_FINISH
+}
+
+(astore_2,istore_2,fstore_2) u4store_2 {
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	POP	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        str     tmp1, [locals, #-8]
+	DISPATCH_FINISH
+}
+
+(astore_3,istore_3,fstore_3) u4store_3 {
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	POP	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        str     tmp1, [locals, #-12]
+	DISPATCH_FINISH
+}
+
+(lstore_0,dstore_0) u8store_0 {
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        stmda   locals, {tmp2, tmp1}
+	DISPATCH_FINISH
+}
+
+(lstore_1,dstore_1) u8store_1 {
+	DISPATCH_START_R2
+	DISPATCH_NEXT
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        stmdb   locals, {tmp2, tmp1}
+	DISPATCH_FINISH
+}
+
+(lstore_2,dstore_2) u8store_2 {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+        str     tmp2, [locals, #-12]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        str     tmp1, [locals, #-8]
+	DISPATCH_FINISH
+}
+
+(lstore_3,dstore_3) u8store_3 {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+        str     tmp2, [locals, #-16]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        str     tmp1, [locals, #-12]
+	DISPATCH_FINISH
+}
+
+(iastore,fastore) u4astore {
+	POP	r3, tmp2, tmp1		@ r3 = value, tmp2 = index, tmp1 = arrayref
+	DISPATCH_START_R2
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry10:
+	ldr	lr, [tmp1, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	tmp2, lr
+	bcs	array_bound_exception_jpc_1_tmp2
+	DISPATCH_NEXT
+	add	tmp1, tmp1, tmp2, lsl #2
+	DISPATCH_NEXT
+	str	r3, [tmp1, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(lastore,dastore) u8astore {
+	POP	r1, r3, tmp2, tmp1		@ r1,r3 = value, tmp2 = index, tmp1 = arrayref
+	DISPATCH_START_R2
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry11:
+	ldr	ip, [tmp1, #8]		@ ip = limit
+	cmp	tmp2, ip
+	DISPATCH_NEXT
+	bcs	array_bound_exception_jpc_1_tmp2
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2, lsl #3
+	str	r1, [tmp2, #BASE_OFFSET_LONG]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	r3, [tmp2, #20]
+	DISPATCH_FINISH
+}
+
+(bastore) bastore {
+	POP	r3, tmp2, tmp1		@ r3 = value, tmp2 = index, tmp1 = arrayref
+	DISPATCH_START_R2
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry12:
+	ldr	lr, [tmp1, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	tmp2, lr
+	bcs	array_bound_exception_jpc_1_tmp2
+	DISPATCH_NEXT
+	add	tmp1, tmp1, tmp2
+	DISPATCH_NEXT
+	strb	r3, [tmp1, #BASE_OFFSET_BYTE]
+	DISPATCH_FINISH
+}
+
+(castore,sastore) u2astore {
+	POP	r3, tmp2, tmp1		@ r3 = value, tmp2 = index, tmp1 = arrayref
+	DISPATCH_START_R2
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry13:
+	ldr	lr, [tmp1, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	tmp2, lr
+	bcs	array_bound_exception_jpc_1_tmp2
+	DISPATCH_NEXT
+	add	tmp1, tmp1, tmp2, lsl #1
+	DISPATCH_NEXT
+	strh	r3, [tmp1, #BASE_OFFSET_SHORT]
+	DISPATCH_FINISH
+}
+
+(pop) jpop {
+	DISPATCH_START_R2
+        add     stack, stack, #4
+	DISPATCH_FINISH
+}
+
+(pop2) jpop2 {
+	DISPATCH_START_R2
+        add     stack, stack, #8
+	DISPATCH_FINISH
+}
+
+(dup) dup {
+	DISPATCH_START_R2
+	ldr	lr, [stack, #4]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(dup_x1) dup_x1 {
+	DISPATCH_START_R2
+	POP	r2, r3
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(dup_x2) dup_x2 {
+	DISPATCH_START_R2
+	POP	r2, r3, lr
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_NEXT
+	PUSH	r2, r3, lr
+	DISPATCH_FINISH
+}
+
+(dup2) dup2 {
+	DISPATCH_START_R2
+	ldmib	stack, {r2, r3}
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(dup2_x1) dup2_x1 {
+	DISPATCH_START_R2
+	POP	r2, r3, lr
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_NEXT
+	PUSH	r2, r3, lr
+	DISPATCH_FINISH
+}
+
+(dup2_x2) dup2_x2 {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1, lr
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	PUSH	r2, r3, tmp1, lr
+	DISPATCH_FINISH
+}
+
+(swap) swap {
+	DISPATCH_START_R2
+	POP	r2, r3
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+
+(iadd) iadd {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	add	tmp2, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(ladd) ladd {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1, lr
+	DISPATCH_NEXT
+	adds	r2, r2, tmp1
+	adc	r3, r3, lr
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(isub) isub {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lsub) lsub {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1, lr
+	DISPATCH_NEXT
+	subs	r2, tmp1, r2
+	sbc	r3, lr, r3
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(imul) imul {
+	DISPATCH_START_R2
+	POP	r2, tmp1
+	DISPATCH_NEXT
+	mul	tmp2, r2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lmul) lmul {
+	POP	r1, tmp1, ip, lr
+        umull   r3, r0, ip, r1
+        mla     tmp1, ip, tmp1, r0
+	DISPATCH_START_R2
+        mla     tmp1, lr, r1, tmp1
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+(ldiv) ldiv {
+	POP	r2, r3
+	POP	r0, r1
+	orrs	lr, r2, r3
+	beq	.ldiv_0
+	bl	__aeabi_ldivmod
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(lrem) lrem {
+	POP	r2, r3
+	POP	r0, r1
+	orrs	lr, r2, r3
+	beq	.lrem_0
+	bl	__aeabi_ldivmod
+	PUSH	r2, r3
+	DISPATCH	\seq_len
+}
+
+(frem) frem {
+@ It must be possible to do better than this
+	POP	r0
+        bl      __aeabi_f2d
+	PUSH	r0, r1
+	GET_STACK	2, r0
+        bl      __aeabi_f2d
+	POP	r2, r3
+        bl      fmod
+        bl      __aeabi_d2f
+	PUT_STACK	0, r0
+	DISPATCH	\seq_len
+}
+
+(drem) drem {
+	POP	r2, r3
+	POP	r0, r1
+        bl      fmod
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(ineg) ineg {
+	DISPATCH_START_R2
+	POP	tmp1
+	DISPATCH_NEXT
+        rsb     tmp1, tmp1, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(lneg) lneg {
+	DISPATCH_START_R2
+	POP	r2, r3
+	DISPATCH_NEXT
+	rsbs	r2, r2, #0
+	rsc	r3, r3, #0
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(fneg) fneg {
+	DISPATCH_START_R2
+	POP	r2
+	DISPATCH_NEXT
+	eor	r2, r2, #0x80000000
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(dneg) dneg {
+	DISPATCH_START_R2
+	GET_STACK	1, r2
+	DISPATCH_NEXT
+	eor	r2, r2, #0x80000000
+	DISPATCH_NEXT
+	PUT_STACK	1, r2
+	DISPATCH_FINISH
+}
+
+(ishl) ishl {
+	DISPATCH_START_R2
+	POP	r2, r3
+	DISPATCH_NEXT
+	and	r2, r2, #31
+	mov	r2, r3, lsl r2
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(lshl) lshl {
+	DISPATCH_START_R2
+	POP	r2, r3, lr
+	DISPATCH_NEXT
+	tst	r2, #32
+	and	r2, r2, #31
+	movne	tmp1, #0
+	movne	lr, r3, lsl r2
+	moveq	tmp1, r3, lsl r2
+	moveq	lr, lr, lsl r2
+	rsbeq	r2, r2, #32
+	orreq	lr, lr, r3, lsr r2
+	PUSH	tmp1, lr
+	DISPATCH_FINISH
+}
+
+(ishr) ishr {
+	DISPATCH_START_R2
+	POP	r2, r3
+	DISPATCH_NEXT
+	and	r2, r2, #31
+	mov	r2, r3, asr r2
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(lshr) lshr {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	tst	r2, #32
+	and	r2, r2, #31
+	movne	lr, tmp1, asr #31
+	movne	r3, tmp1, asr r2
+	moveq	lr, tmp1, asr r2
+	moveq	r3, r3, lsr r2
+	rsbeq	r2, r2, #32
+	orreq	r3, r3, tmp1, lsl r2
+	PUSH	r3, lr
+	DISPATCH_FINISH
+}
+
+(iushr) iushr {
+	DISPATCH_START_R2
+	POP	r2, r3
+	DISPATCH_NEXT
+	and	r2, r2, #31
+	mov	r2, r3, lsr r2
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(lushr) lushr {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	tst	r2, #32
+	and	r2, r2, #31
+	movne	lr, #0
+	movne	r3, tmp1, lsr r2
+	moveq	lr, tmp1, lsr r2
+	moveq	r3, r3, lsr r2
+	rsbeq	r2, r2, #32
+	orreq	r3, r3, tmp1, lsl r2
+	PUSH	r3, lr
+	DISPATCH_FINISH
+}
+
+(iand) iand {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	and	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(land) land {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1, lr
+	DISPATCH_NEXT
+	and	r2, tmp1, r2
+	and	r3, lr, r3
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(ior) ior {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	orr	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lor) lor {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1, lr
+	DISPATCH_NEXT
+	orr	r2, tmp1, r2
+	orr	r3, lr, r3
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(ixor) ixor {
+	DISPATCH_START_R2
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	eor	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lxor) lxor {
+	DISPATCH_START_R2
+	POP	r2, r3, tmp1, lr
+	DISPATCH_NEXT
+	eor	r2, tmp1, r2
+	eor	r3, lr, r3
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iinc) iinc {
+	ldrsb	lr, [jpc, #2]
+	DISPATCH_START	\seq_len
+	rsb	tmp1, r2, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	add	r3, r3, lr
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(i2l) i2l {
+	DISPATCH_START_R2
+	POP	r2
+	DISPATCH_NEXT
+	mov	r3, r2, asr #31
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(i2f) i2f {
+	POP	r0
+        bl      __aeabi_i2f
+	PUSH	r0
+	DISPATCH	\seq_len
+}
+
+(i2d) i2d {
+	POP	r0
+        bl      __aeabi_i2d
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(l2i) l2i {
+	DISPATCH_START_R2
+	POP	r3
+	DISPATCH_NEXT
+	PUT_STACK	0, r3
+	DISPATCH_FINISH
+}
+
+(l2f) l2f {
+	POP	r0, r1
+        bl      __aeabi_l2f
+	PUSH	r0
+	DISPATCH	\seq_len
+}
+
+(l2d) l2d {
+	POP	r0, r1
+        bl      __aeabi_l2d
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(f2i) f2i {
+	POP	r0
+        bl      _ZN13SharedRuntime3f2iEf
+	PUSH	r0
+	DISPATCH	\seq_len
+}
+
+(f2l) f2l {
+	POP	r0
+        bl      _ZN13SharedRuntime3f2lEf
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(f2d) f2d {
+	POP	r0
+        bl      __aeabi_f2d
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(d2i) d2i {
+	POP	r0, r1
+        bl      _ZN13SharedRuntime3d2iEd
+	PUSH	r0
+	DISPATCH	\seq_len
+}
+
+(d2l) d2l {
+	POP	r0, r1
+        bl      _ZN13SharedRuntime3d2lEd
+	PUSH	r0, r1
+	DISPATCH	\seq_len
+}
+
+(d2f) d2f {
+	POP	r0, r1
+        bl      __aeabi_d2f
+	PUSH	r0
+	DISPATCH	\seq_len
+}
+
+(i2b) i2b {
+	DISPATCH_START_R2
+	POP	r3
+	DISPATCH_NEXT
+        mov     r3, r3, asl #24
+        mov     r3, r3, asr #24
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(i2c) i2c {
+	DISPATCH_START_R2
+	POP	r3
+	DISPATCH_NEXT
+        mov     r3, r3, asl #16
+        mov     r3, r3, lsr #16
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(i2s) i2s {
+	DISPATCH_START_R2
+	POP	r3
+	DISPATCH_NEXT
+        mov     r3, r3, asl #16
+        mov     r3, r3, asr #16
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(lcmp) lcmp {
+	POP	r1, r3, tmp1, lr
+	DISPATCH_START_R2
+	subs	r1, tmp1, r1
+	movne	r1, #1
+	sbcs	lr, lr, r3
+	DISPATCH_NEXT
+	movne	r1, #1
+	rsblt	r1, r1, #0
+	DISPATCH_NEXT
+	PUSH	r1
+	DISPATCH_FINISH
+}
+
+#ifdef NOTICE_SAFEPOINTS
+
+@ r2 = [jpc, #1]
+@ r1 = [jpc, #2]
+(ifeq,ifnull) ifeq_unsafe {
+	POP	r3
+	ldrb	r1, [jpc, #2]
+        cmp     r3, #0
+	beq	1f
+	DISPATCH 3
+1:
+	mov	r2, r2, lsl #24
+        orr     ip, r1, r2, asr #16
+        ldrb  r0, [jpc, ip]!
+	DISPATCH_BYTECODE
+}
+
+(ifne,ifnonnull) ifne_unsafe {
+	POP	r3
+	ldrb	r1, [jpc, #2]
+        cmp     r3, #0
+	bne	1f
+	DISPATCH 3
+1:
+	mov	r2, r2, lsl #24
+        orr     ip, r1, r2, asr #16
+        ldrb  r0, [jpc, ip]!
+	DISPATCH_BYTECODE
+}
+
+(iflt) iflt_unsafe {
+	POP	r3
+	ldrb	r1, [jpc, #2]
+        cmp     r3, #0
+	blt	1f
+	DISPATCH 3
+1:
+	mov	r2, r2, lsl #24
+        orr     ip, r1, r2, asr #16
+        ldrb  r0, [jpc, ip]!
+	DISPATCH_BYTECODE
+}
+
+(ifge) ifge_unsafe {
+	POP	r3
+	ldrb	r1, [jpc, #2]
+        cmp     r3, #0
+	bge	1f
+	DISPATCH 3
+1:
+	mov	r2, r2, lsl #24
+        orr     ip, r1, r2, asr #16
+        ldrb  r0, [jpc, ip]!
+	DISPATCH_BYTECODE
+}
+
+(ifgt) ifgt_unsafe {
+	POP	r3
+	ldrb	r1, [jpc, #2]
+        cmp     r3, #0
+	bgt	1f
+	DISPATCH 3
+1:
+	mov	r2, r2, lsl #24
+        orr     ip, r1, r2, asr #16
+        ldrb  r0, [jpc, ip]!
+	DISPATCH_BYTECODE
+}
+
+(ifle) ifle_unsafe {
+	POP	r3
+	ldrb	r1, [jpc, #2]
+        cmp     r3, #0
+	ble	1f
+	DISPATCH 3
+1:
+	mov	r2, r2, lsl #24
+        orr     ip, r1, r2, asr #16
+        ldrb  r0, [jpc, ip]!
+	DISPATCH_BYTECODE
+}
+
+(if_icmpeq,if_acmpeq) if_icmpeq_unsafe {
+	POP	r3, tmp1
+	ldrb	r1, [jpc, #2]
+        cmp     tmp1, r3
+	beq	branch_taken_unsafe
+	DISPATCH 3
+}
+
+(if_icmpne,if_acmpne) if_icmpne_unsafe {
+	POP	r3, tmp1
+	ldrb	r1, [jpc, #2]
+        cmp     tmp1, r3
+	bne	branch_taken_unsafe
+	DISPATCH 3
+}
+
+(if_icmplt) if_icmplt_unsafe {
+	POP	r3, tmp1
+	ldrb	r1, [jpc, #2]
+        cmp     tmp1, r3
+	blt	branch_taken_unsafe
+	DISPATCH 3
+}
+
+(if_icmpge) if_icmpge_unsafe {
+	POP	r3, tmp1
+	ldrb	r1, [jpc, #2]
+        cmp     tmp1, r3
+	bge	branch_taken_unsafe
+	DISPATCH 3
+}
+
+(if_icmpgt) if_icmpgt_unsafe {
+	POP	r3, tmp1
+	ldrb	r1, [jpc, #2]
+        cmp     tmp1, r3
+	bgt	branch_taken_unsafe
+	DISPATCH 3
+}
+
+(if_icmple) if_icmple_unsafe {
+	POP	r3, tmp1
+	ldrb	r1, [jpc, #2]
+        cmp     tmp1, r3
+	ble	branch_taken_unsafe
+	DISPATCH 3
+}
+
+(goto) goto_unsafe {
+	ldrb	r1, [jpc, #2]
+	mov	r2, r2, lsl #24
+        orr     tmp1, r1, r2, asr #16
+        DISPATCH_START_REG	tmp1
+  USEC  cmp     tmp1, #0
+  USEC  ble     do_backedge
+	DISPATCH_BYTECODE
+}
+
+#endif // NOTICE_SAFEPOINTS
+
+(jsr) jsr {
+	ldr	r3, [istate, #ISTATE_METHOD]
+	ldr	r1, [r3, #8]
+	rsb	r2, r1, jpc
+	sub	r2, r2, #45
+	PUSH	r2
+	b	do_goto
+}
+
+@ r2 = [jpc, #1]
+@ r1 = [jpc, #2]
+(ret) ret {
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [r0, #8]
+	ldr	r1, [locals, -r2, lsl #2]
+	add	jpc, r3, r1
+	DISPATCH	48
+}
+
+@ We dont do safe and unsafe versions of tableswitch and lookupswitch
+(tableswitch) tableswitch {
+	POP	a2
+        bic     a1, jpc, #3
+        ldr     a4,[a1,#8]
+@       BYTESEX_REVERSE a3, a4, a3
+
+        eor     a3, a4, a4, ror #16
+        bic     a3, a3, #0xff0000
+        mov     a4, a4, ror #8
+        eor     a3, a4, a3, lsr #8
+
+        ldr     a4,[a1,#12]
+@       BYTESEX_REVERSE a4, a4, ip
+
+        eor     ip, a4, a4, ror #16
+        bic     ip, ip, #0xff0000
+        mov     a4, a4, ror #8
+        eor     a4, a4, ip, lsr #8
+
+        sub     a2,a2,a3
+        sub     a4,a4,a3
+        cmp     a4,a2
+        ldrcc   a1,[a1,#4]
+        addcs   a1,a1,a2,LSL #2
+        ldrcs   a1,[a1,#16]
+@       BYTESEX_REVERSE a1, a1, a4
+
+        eor     a4, a1, a1, ror #16
+        bic     a4, a4, #0xff0000
+        mov     a1, a1, ror #8
+        eors    ip, a1, a4, lsr #8
+
+        DISPATCH_START_REG	ip
+	DISPATCH_BYTECODE
+}
+
+(lookupswitch) lookupswitch {
+	POP	a2
+        bic     a1, jpc, #3
+@       BYTESEX_REVERSE a2, a2, ip
+
+        eor     ip, a2, a2, ror #16
+        bic     ip, ip, #0xff0000
+        mov     a2, a2, ror #8
+        eor     a2, a2, ip, lsr #8
+
+        ldr     a3,[a1,#8]
+@       BYTESEX_REVERSE a3, a3, ip
+
+        eor     ip, a3, a3, ror #16
+        bic     ip, ip, #0xff0000
+        mov     a3, a3, ror #8
+        eor     a3, a3, ip, lsr #8
+
+        subs    a4,a3,#1
+        bmi     1f
+        add     a1, a1, #4
+0:
+        ldr      a3,[a1,#8]!
+        cmp     a3,a2
+        beq     2f
+        subs    a4,a4,#1
+        bpl     0b
+1:
+        bic     a1, jpc, #3
+2:
+        ldr      a2,[a1,#4]
+@       BYTESEX_REVERSE a2, a2, ip
+
+        eor     ip, a2, a2, ror #16
+        bic     ip, ip, #0xff0000
+        mov     a2, a2, ror #8
+        eors    ip, a2, ip, lsr #8
+
+        DISPATCH_START_REG	ip
+	DISPATCH_BYTECODE
+}
+
+#ifdef FAST_BYTECODES
+(igetfield) igetfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	tmp1
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry78:
+	ldr	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(bgetfield) bgetfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	tmp1
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry79:
+	ldrsb	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(cgetfield) cgetfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	tmp1
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry80:
+	ldrh	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(sgetfield) sgetfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	tmp1
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry81:
+	ldrsh	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(lgetfield) lgetfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	tmp1
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+.abortentry82:
+	ldmia	tmp2, {tmp2, tmp1}
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(iputfield) iputfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	r3, tmp1		@ r3 = value, tmp1 = object
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+.abortentry83:
+	str	r3, [tmp1, tmp2]
+	DISPATCH_FINISH
+}
+
+(cputfield) cputfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	r3, tmp1		@ r3 = value, tmp1 = object
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+.abortentry84:
+	strh	r3, [tmp1, tmp2]
+	DISPATCH_FINISH
+}
+
+(bputfield) bputfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	r3, tmp1		@ r3 = value, tmp1 = object
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+.abortentry85:
+	strb	r3, [tmp1, tmp2]
+	DISPATCH_FINISH
+}
+
+(aputfield) aputfield {
+	ldrb	r1, [jpc, #2]
+	POP	r3, tmp1		@ r3 = value, tmp1 = object
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+.abortentry113:
+	str	r3, [tmp1, tmp2]
+	mov	r0, tmp1
+	bl	Helper_aputfield
+	DISPATCH 3
+}
+
+(lputfield) lputfield {
+	ldrb	r1, [jpc, #2]
+	DISPATCH_START	3
+	POP	r3, tmp1, lr		@ r3, tmp1 = value, lr = object
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	ldr	tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	add	tmp2, lr, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+.abortentry86:
+	stm	tmp2, {r3, tmp1}
+	DISPATCH_FINISH
+}
+
+#endif // FAST_BYTECODES
+
+@ r2 = [jpc, #1]
+@ r1 = [jpc, #2]
+(getstatic) getstatic {
+	ldrb	r1, [jpc, #2]
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+        ldr     r3, [tmp2, #CP_OFFSET]
+	and	r3, r3, #0x00ff0000
+	cmp	r3, #opc_getstatic << 16
+	blne	resolve_get_put
+	ldr	r3, [tmp2, #CP_OFFSET+4]
+	ldr	r2, [tmp2, #CP_OFFSET+12]
+        ldr     lr, [tmp2, #CP_OFFSET+8]
+        movs    r2, r2, lsr #29
+	bhi	getstatic_w		@ C = 1, Z = 0 => R2 == 3, 5, 7
+	bcs	getstatic_h		@ C = 1 => R2 = 1
+	beq	getstatic_sb		@ Z = 1 => R2 = 0
+	tst	r2, #2
+	bne	getstatic_dw
+	b	getstatic_sh
+}
+
+@ r2 = [jpc, #1]
+@ r1 = [jpc, #2]
+(putstatic) putstatic {
+	ldrb	r1, [jpc, #2]
+        add     tmp2, constpool, r1, lsl #12
+	add	tmp2, tmp2, r2, lsl #4
+        ldr     r3, [tmp2, #CP_OFFSET]
+        and     r3, r3, #0xff000000
+        cmp     r3, #opc_putstatic << 24
+	blne	resolve_get_put
+	ldr	r3, [tmp2, #CP_OFFSET+4]		@ r3 = object
+        ldr     lr, [tmp2, #CP_OFFSET+12]           @ lr = tos_type
+        ldr     r2, [tmp2, #CP_OFFSET+8]            @ r2 = offset
+	movs	lr, lr, lsr #29
+	bhi	putstatic_w		@ C = 1, Z = 0 => R2 == 3, 5, 7
+	bcs	putstatic_h		@ C = 1 => R2 = 1
+	beq	putstatic_sb		@ Z = 1 => R2 = 0
+	tst	lr, #2
+	bne	putstatic_dw
+	b	putstatic_sh
+}
+
+#ifdef NOTICE_SAFEPOINTS
+
+(return) return_unsafe {
+
+	ldr	tmp2, [istate, #ISTATE_MONITOR_BASE]	@ tmp2 = base
+	ldr	tmp1, [istate, #ISTATE_STACK_BASE]	@ tmp1 = end
+	ldr	tmp_xxx, [istate, #ISTATE_THREAD]
+
+	cmp	tmp1, tmp2
+	bcc	1f
+2:
+	mov	r3, #0
+
+	ldr	r2, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r3, [tmp_xxx, #THREAD_LAST_JAVA_SP]
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [r2, #0]
+	ldrh	r0, [r0, #40]
+	add	r1, r2, #4
+	str	r3, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+
+	add	stack, r1, r0, lsl #2
+
+	str	stack, [tmp_xxx, #THREAD_JAVA_SP]
+
+	ldmfd	arm_sp!, {fast_regset, pc}
+1:
+	bl	return_check_monitors
+	b	2b
+}
+
+(ireturn,areturn,freturn) ireturn_unsafe {
+
+	ldr	tmp2, [istate, #ISTATE_MONITOR_BASE]	@ tmp2 = base
+	ldr	tmp1, [istate, #ISTATE_STACK_BASE]	@ tmp1 = end
+	ldr	tmp_xxx, [istate, #ISTATE_THREAD]
+
+	cmp	tmp1, tmp2
+	bcc	1f
+2:
+	mov	r3, #0
+
+	POP	r1					@ pop result before we lose stack
+
+	ldr	stack, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r3, [tmp_xxx, #THREAD_LAST_JAVA_SP]
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [stack, #0]
+	ldrh	r0, [r0, #40]
+
+	str	r3, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r1, [stack, r0, lsl #2]!
+
+	str	stack, [tmp_xxx, #THREAD_JAVA_SP]
+
+	ldmfd	arm_sp!, {fast_regset, pc}
+1:
+	bl	return_check_monitors
+	b	2b
+}
+
+(lreturn,dreturn) lreturn_unsafe {
+
+	ldr	tmp2, [istate, #ISTATE_MONITOR_BASE]	@ tmp2 = base
+	ldr	tmp1, [istate, #ISTATE_STACK_BASE]	@ tmp1 = end
+	ldr	tmp_xxx, [istate, #ISTATE_THREAD]
+	cmp	tmp1, tmp2
+	bcc	1f
+2:
+	mov	r3, #0
+
+	ldr	r2, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r3, [tmp_xxx, #THREAD_LAST_JAVA_SP]
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [r2, #0]
+	ldrh	r0, [r0, #40]
+	add	r1, r2, #4
+	str	r3, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+
+	POP	r2, r3
+
+	add	stack, r1, r0, lsl #2
+	stmdb	stack!, {r2, r3}
+
+	str	stack, [tmp_xxx, #THREAD_JAVA_SP]
+
+	ldmfd	arm_sp!, {fast_regset, pc}
+1:
+	bl	return_check_monitors
+	b	2b
+}
+
+#endif // NOTICE_SAFEPOINTS
+
+(ldc) ldc {
+	ldr	r3, [istate, #ISTATE_METHOD]			@ method
+	ldrb	lr, [jpc, #1]
+
+	ldr	tmp1, [r3, #METHOD_CONSTANTS]			@ constants
+
+	DISPATCH_START	\seq_len
+
+	ldr	r3, [tmp1, #8]
+	DISPATCH_NEXT
+	add	r3, r3, #12
+	ldrb	r3, [r3, lr]
+
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+
+	cmp	r3, #JVM_CONSTANT_Integer
+	cmpne	r3, #JVM_CONSTANT_Float
+	cmpne	r3, #JVM_CONSTANT_String
+	bne	1f
+
+	add	r3, tmp1, lr, lsl #2
+	ldr	r3, [r3, #CONSTANTPOOL_BASE]
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+1:
+	cmp	r3, #JVM_CONSTANT_Class
+	bne	2f
+	add	r0, tmp1, #CONSTANTPOOL_BASE
+	ldr	r0, [r0, lr, lsl #2]
+	ldr	r1, [r0, #60]
+	PUSH	r1
+	DISPATCH	0
+2:
+	sub	jpc, jpc, #\seq_len
+	ldr	r0, [istate, #ISTATE_THREAD]
+        DECACHE_JPC
+        DECACHE_STACK
+	mov	r1, #0
+        bl      _ZN18InterpreterRuntime3ldcEP10JavaThreadb
+	ldr	r0, [istate, #ISTATE_THREAD]			@ thread
+	CACHE_CP
+	ldr	r1, [r0, #THREAD_PENDING_EXC]
+	CACHE_JPC
+	cmp	r1, #0
+	bne	handle_exception
+	ldr	r3, [r0, #THREAD_VM_RESULT]
+	mov	r2, #0
+	PUSH	r3
+	str	r2, [r0, #THREAD_VM_RESULT]
+	DISPATCH	\seq_len
+}
+
+(ldc_w) ldc_w {
+	ldrb	lr, [jpc, #1]
+
+	ldr	r3, [istate, #ISTATE_METHOD]			@ method
+	ldrb	ip, [jpc, #2]
+	ldr	r2, [r3, #METHOD_CONSTANTS]			@ constants
+
+	DISPATCH_START	\seq_len
+
+	ldr	r3, [r2, #8]
+	orr	lr, ip, lr, lsl #8
+	add	r3, r3, #12
+	ldrb	r3, [r3, lr]
+
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+
+	cmp	r3, #JVM_CONSTANT_Integer
+	cmpne	r3, #JVM_CONSTANT_Float
+	cmpne	r3, #JVM_CONSTANT_String
+	bne	1f
+
+	add	r3, r2, lr, lsl #2
+	ldr	r3, [r3, #CONSTANTPOOL_BASE]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+1:
+	cmp	r3, #JVM_CONSTANT_Class
+	bne	2f
+	add	r0, r2, #CONSTANTPOOL_BASE
+	ldr	r0, [r0, lr, lsl #2]
+	ldr	r1, [r0, #60]
+	PUSH	r1
+	DISPATCH	0
+2:
+	sub	jpc, jpc, #\seq_len
+	ldr	r0, [istate, #ISTATE_THREAD]
+        DECACHE_JPC
+        DECACHE_STACK
+	mov	r1, #1
+        bl      _ZN18InterpreterRuntime3ldcEP10JavaThreadb
+	ldr	r0, [istate, #ISTATE_THREAD]			@ thread
+	CACHE_CP
+	ldr	r1, [r0, #THREAD_PENDING_EXC]
+	CACHE_JPC
+	cmp	r1, #0
+	ldr	r3, [r0, #THREAD_VM_RESULT]
+	bne	handle_exception
+	mov	r2, #0
+	PUSH	r3
+	str	r2, [r0, #THREAD_VM_RESULT]
+	DISPATCH	\seq_len
+}
+
+(ldc2_w) ldc2_w {
+	ldrb	r3, [jpc, #1]
+
+	ldr	tmp1, [istate, #ISTATE_METHOD]			@ method
+	ldrb	lr, [jpc, #2]
+	ldr	r2, [tmp1, #METHOD_CONSTANTS]			@ constants
+
+	DISPATCH_START	\seq_len
+
+	ldr	tmp1, [r2, #8]
+	orr	r3, lr, r3, lsl #8
+	add	tmp1, tmp1, #12
+	ldrb	tmp1, [tmp1, r3]
+
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+
+	cmp	tmp1, #JVM_CONSTANT_Long
+	cmpne	tmp1, #JVM_CONSTANT_Double
+	bne	vm_fatal_error
+
+	add	tmp1, r2, r3, lsl #2
+	ldr	r3, [tmp1, #CONSTANTPOOL_BASE]
+	ldr	tmp1, [tmp1, #CONSTANTPOOL_BASE+4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+#ifdef FAST_BYTECODES
+(iadd_u4store) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(isub_u4store) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iand_u4store) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	and	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(ior_u4store) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	orr	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(ixor_u4store) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	eor	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iadd_istore_N) {
+	ldrb	lr, [jpc, #1]
+	DISPATCH_START	\seq_len
+	DISPATCH_NEXT
+	rsb	r3, lr, #opc_istore_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(isub_istore_N) {
+	ldrb	lr, [jpc, #1]
+	DISPATCH_START	\seq_len
+	DISPATCH_NEXT
+	rsb	r3, lr, #opc_istore_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iand_istore_N) {
+	ldrb	lr, [jpc, #1]
+	DISPATCH_START	\seq_len
+	DISPATCH_NEXT
+	rsb	r3, lr, #opc_istore_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	and	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(ior_istore_N) {
+	ldrb	lr, [jpc, #1]
+	DISPATCH_START	\seq_len
+	DISPATCH_NEXT
+	rsb	r3, lr, #opc_istore_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	orr	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+(ixor_istore_N) {
+	ldrb	lr, [jpc, #1]
+	DISPATCH_START	\seq_len
+	DISPATCH_NEXT
+	rsb	r3, lr, #opc_istore_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	eor	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iconst_N)
+{
+        ldrb    r3, [jpc, #2]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+        DISPATCH_NEXT
+        sub     r3, r3, #opc_iconst_0
+        ldr     tmp1, [locals, r2, lsl #2]
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH   r3, tmp1
+        DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+        ldrb    r2, [jpc, #1-\seq_len]
+        DISPATCH_NEXT
+        ldr     tmp1, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        sub     tmp2, r2, #opc_iconst_0
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH   tmp2, tmp1
+        DISPATCH_FINISH
+}
+
+@ (aload_N)(getfield)
+(iaccess_0,iaccess_1,iaccess_2,iaccess_3)
+{
+	ldrb	r2, [jpc, #3]
+	rsb	tmp1, r0, #opc_iaccess_0
+	ldrb	r3, [jpc, #2]
+	add	tmp2, constpool, r2, lsl #12
+	DISPATCH_START	4
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, r3, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry87:
+	ldr	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iload) fast_iload_iload
+{
+	ldrb	r3, [jpc, #3]
+	DISPATCH_START	\seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iload_N) fast_iload_iload_N
+{
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload) fast_iload_N_iload
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	DISPATCH_START	\seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N) fast_iload_N_iload_N
+{
+	rsb	r3, r0, #opc_iload_0_iload_N
+	DISPATCH_START	\seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	ldr	r3, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+#endif // FAST_BYTECODE
+
+#ifdef HW_FP
+
+(fadd) fadd_vfp {
+	DISPATCH_START_R2
+	vldr	s15, [stack, #8]
+	vldr	s14, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fadds	s15, s15, s14
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	s15, [stack, #8]
+	add	stack, stack, #4
+	DISPATCH_FINISH
+}
+
+(dadd) dadd_vfp {
+	DISPATCH_START_R2
+	vldr	d7, [stack, #12]
+	vldr	d6, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	faddd	d0, d7, d6
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	d0, [stack, #12]
+	add	stack, stack, #8
+	DISPATCH_FINISH
+}
+
+(fsub) fsub_vfp {
+	DISPATCH_START_R2
+	vldr	s15, [stack, #8]
+	vldr	s14, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fsubs	s15, s15, s14
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	s15, [stack, #8]
+	add	stack, stack, #4
+	DISPATCH_FINISH
+}
+
+(fmul) fmul_vfp {
+	DISPATCH_START_R2
+	vldr	s15, [stack, #8]
+	vldr	s14, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fmuls	s15, s15, s14
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	s15, [stack, #8]
+	add	stack, stack, #4
+	DISPATCH_FINISH
+}
+
+(dmul) dmul_vfp {
+	DISPATCH_START_R2
+	vldr	d7, [stack, #12]
+	vldr	d6, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fmuld	d0, d7, d6
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	d0, [stack, #12]
+	add	stack, stack, #8
+	DISPATCH_FINISH
+}
+
+(fdiv) fdiv_vfp {
+	DISPATCH_START_R2
+	vldr	s15, [stack, #8]
+	vldr	s14, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fdivs	s15, s15, s14
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	s15, [stack, #8]
+	add	stack, stack, #4
+	DISPATCH_FINISH
+}
+
+(ddiv) ddiv_vfp {
+	DISPATCH_START_R2
+	vldr	d7, [stack, #12]
+	vldr	d6, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fdivd	d0, d7, d6
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	vstr	d0, [stack, #12]
+	add	stack, stack, #8
+	DISPATCH_FINISH
+}
+
+(fcmpl) fcmpl_vfp {
+	DISPATCH_START_R2
+	flds	s14, [stack, #8]
+	flds	s15, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fcmpes	s14, s15
+	add	stack, stack, #8
+	fmstat
+	mvnmi	r3, #0
+	bmi	1f
+	movgt	r3, #1
+	bgt	1f
+	fcmps	s14, s15
+	fmstat
+	moveq	r3, #0
+	mvnne	r3, #0
+1:
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(fcmpg) fcmpg_vfp {
+	DISPATCH_START_R2
+	flds	s14, [stack, #8]
+	flds	s15, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fcmpes	s14, s15
+	add	stack, stack, #8
+	fmstat
+	mvnmi	r3, #0
+	bmi	1f
+	movgt	r3, #1
+	bgt	1f
+	fcmps	s14, s15
+	fmstat
+	moveq	r3, #0
+	movne	r3, #1
+1:
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(dcmpl) dcmpl_vfp {
+	DISPATCH_START_R2
+	fldd	d6, [stack, #12]
+	fldd	d7, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fcmped	d6, d7
+	fmstat
+	mvnmi	r3, #0
+	bmi	1f
+	movgt	r3, #1
+	bgt	1f
+	fcmpd	d6, d7
+	fmstat
+	moveq	r3, #0
+	mvnne	r3, #0
+1:
+	add	stack, stack, #16
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(dcmpg) dcmpg_vfp {
+	DISPATCH_START_R2
+	fldd	d6, [stack, #12]
+	fldd	d7, [stack, #4]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	fcmped	d6, d7
+	fmstat
+	mvnmi	r3, #0
+	bmi	1f
+	movgt	r3, #1
+	bgt	1f
+	fcmpd	d6, d7
+	fmstat
+	moveq	r3, #0
+	movne	r3, #1
+1:
+	add	stack, stack, #16
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+#endif // HW_FP
+
+#ifdef FAST_BYTECODES
+
+@##############################################################################
+@ Optimised bytecode pairs
+@##############################################################################
+
+@ --- load; iaccess ------------------------------------------------------
+
+(iload_0,iload_1,iload_2,iload_3)
+(iaccess_0,iaccess_1,iaccess_2,iaccess_3)
+{
+	rsb	lr, r0, #opc_iload_0
+	ldrb	r2, [jpc, #4]
+	rsb	tmp1, r1, #opc_iaccess_0
+	ldrb	r3, [jpc, #3]
+	ldr	lr, [locals, lr, lsl #2]
+	add	tmp2, constpool, r2, lsl #12
+	DISPATCH_START	\seq_len
+	PUSH	lr
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, r3, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry111:
+	ldr	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)
+(iaccess_0,iaccess_1,iaccess_2,iaccess_3)
+{
+	rsb	lr, r2, #0
+	ldrb	r2, [jpc, #5]
+	rsb	tmp1, r1, #opc_iaccess_0
+	ldrb	r3, [jpc, #4]
+	ldr	lr, [locals, lr, lsl #2]
+	add	tmp2, constpool, r2, lsl #12
+	DISPATCH_START	\seq_len
+	PUSH	lr
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, r3, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry112:
+	ldr	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+@ --- load; load ---------------------------------------------------------
+
+(aload_0,aload_1,aload_2,aload_3)
+(aload_0,aload_1,aload_2,aload_3)
+{
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r1, #opc_aload_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r1, #opc_iload_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(aload_0,aload_1,aload_2,aload_3)
+{
+	rsb	tmp1, r0, #opc_iload_0
+        DISPATCH_START  \seq_len
+	rsb	tmp2, r1, #opc_aload_0
+        DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	cmp	r0, #opc_igetfield
+	ldr	tmp2, [locals, tmp2, lsl #2]
+        beq     1f
+2:
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+        DISPATCH_FINISH
+1:
+	ldrb	lr, [jpc, #-1]
+	add	lr, lr, #opc_iaccess_0-opc_aload_0
+	strb	lr, [jpc, #-1]
+	b	2b
+}
+
+@ 7 cycles
+(iload_0,iload_1,iload_2,iload_3)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	add	r0, r0, #opc_iload_0_iload_N-opc_iload_0
+	strb	r0, [jpc]
+	b	do_fast_iload_N_iload_N
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(iload,aload,fload)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(aload,fload)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(iload)
+{
+	add	r0, r0, #opc_iload_0_iload-opc_iload_0
+	strb	r0, [jpc]
+	b	do_fast_iload_N_iload
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)
+(aload_0,aload_1,aload_2,aload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r1, #opc_aload_0
+	DISPATCH_NEXT
+	rsb	tmp1, r2, #0
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	cmp	r0, #opc_igetfield
+	DISPATCH_NEXT
+	beq	1f
+2:
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+1:
+	ldrb	lr, [jpc, #-1]
+	add	lr, lr, #opc_iaccess_0-opc_aload_0
+	strb	lr, [jpc, #-1]
+	b	2b
+}
+
+@ r2 = [jpc, #1]
+(aload,fload)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r1, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp1, r2, #0
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	mov	r0, #opc_iload_iload_N
+	strb	r0, [jpc]
+	b	do_fast_iload_iload_N
+}
+
+@ r2 = [jpc, #1]
+(aload,fload)(iload,aload,fload) {
+	ldrb	tmp2, [jpc, #3]
+	rsb	tmp1, r2, #0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, tmp2, #0
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+(iload)(iload) {
+	mov	r0, #opc_iload_iload
+	strb	r0, [jpc]
+	b	do_fast_iload_iload
+}
+
+(iload)(aload,fload) {
+	ldrb	tmp2, [jpc, #3]
+	rsb	tmp1, r2, #0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, tmp2, #0
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2, tmp1
+	DISPATCH_FINISH
+}
+
+@ --- load; store --------------------------------------------------------
+
+(aload_0,aload_1,aload_2,aload_3)
+(astore_0,astore_1,astore_2,astore_3)
+{
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r1, #opc_astore_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp1, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(istore_0,istore_1,istore_2,istore_3)
+{
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r1, #opc_istore_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp1, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(astore,istore,fstore)
+{
+	ldrb	tmp2, [jpc, #2]
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, tmp2, #0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp1, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(astore,istore,fstore)
+{
+	ldrb	tmp2, [jpc, #2]
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, tmp2, #0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp1, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)
+(astore_0,astore_1,astore_2,astore_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	tmp1, r1, #opc_astore_0
+	DISPATCH_NEXT
+	rsb	tmp2, r2, #0
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)
+(istore_0,istore_1,istore_2,istore_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	tmp1, r1, #opc_istore_0
+	DISPATCH_NEXT
+	rsb	tmp2, r2, #0
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(astore,istore,fstore) {
+	ldrb	tmp1, [jpc, #3]
+	rsb	tmp2, r2, #0
+	DISPATCH_START	\seq_len
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	tmp2, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ --- load; const -------------------------------------------------------
+
+(aload_0,aload_1,aload_2,aload_3)
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)
+{
+	rsb	tmp1, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	sub	tmp2, r1, #opc_iconst_0
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)
+{
+        add     r0, r0, #opc_iload_0_iconst_N-opc_iload_0
+        strb    r0, [jpc]
+	b	do_iload_0_iconst_N
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)
+{
+        cmp     r0, #opc_iload
+        DISPATCH_START  \seq_len
+        sub     r3, r1, #opc_iconst_0
+        DISPATCH_NEXT
+        ldr     tmp2, [locals, -r2, lsl #2]
+        DISPATCH_NEXT
+        beq     1f
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH   r3, tmp2
+        DISPATCH_FINISH
+1:
+        mov     tmp1, #opc_iload_iconst_N
+        strb    tmp1, [jpc, #-\seq_len]!
+	b	do_iload_iconst_N
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(bipush)
+{
+	ldrsb	r2, [jpc, #2]
+	rsb	r3, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(bipush)
+{
+	ldrsb	r2, [jpc, #2]
+	rsb	r3, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(sipush)
+{
+        ldrsb   r2, [jpc, #2]   @ zero_extendqisi2
+        ldrb    lr, [jpc, #3]   @ zero_extendqisi2
+	rsb	r3, r0, #opc_aload_0
+	DISPATCH_START	\seq_len
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        orr     r2, lr, r2, asl #8
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(sipush)
+{
+        ldrsb   r2, [jpc, #2]   @ zero_extendqisi2
+        ldrb    lr, [jpc, #3]   @ zero_extendqisi2
+	rsb	r3, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        orr     r2, lr, r2, asl #8
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(bipush) {
+	ldrsb	r3, [jpc, #3]
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r3, lr
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(sipush) {
+	ldrsb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #4]
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, -r2, lsl #2]
+        orr     r3, lr, r3, asl #8
+	DISPATCH_NEXT
+	PUSH	r3, tmp1
+	DISPATCH_FINISH
+}
+
+@ --- load; Xaload -------------------------------------------------------
+
+(iload_0,iload_1,iload_2,iload_3)
+(iaload,aaload,faload)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, r2, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry19:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2, lsl #2
+	ldr	lr, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(iaload,aaload,faload) {
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry20:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2, lsl #2
+	ldr	lr, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(baload)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, r2, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry21:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2
+	ldrsb	lr, [r3, #BASE_OFFSET_BYTE]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(caload)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, r2, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry22:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2, lsl #1
+	ldrh	lr, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(saload)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, r2, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry23:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2, lsl #1
+	ldrsh	lr, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(baload) {
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry24:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2
+	ldrsb	lr, [r3, #BASE_OFFSET_BYTE]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(caload) {
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry25:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2, lsl #1
+	ldrh	lr, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload,aload,fload)(saload) {
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry26:
+	ldr	lr, [r3, #8]		@ lr = length
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	add	r3, r3, r2, lsl #1
+	ldrsh	lr, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+@ --- load; Xastore -------------------------------------------------------
+
+(iload_0,iload_1,iload_2,iload_3)
+(iastore,fastore)
+{
+	POP	r2, r3
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry27:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(bastore)
+{
+	POP	r2, r3
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry28:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2
+	strb	tmp1, [r3, #BASE_OFFSET_BYTE]
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(castore,sastore)
+{
+	POP	r2, r3
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry29:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #1
+	strh	tmp1, [r3, #BASE_OFFSET_SHORT]
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(iastore,fastore) {
+	POP	r3, tmp1
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, -r2, lsl #2]
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry30:
+	ldr	lr, [tmp1, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r3, lr
+	bcs	array_bound_exception_jpc_1_r3
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r3, lsl #2
+	str	r2, [tmp1, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(bastore) {
+	POP	r3, tmp1
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, -r2, lsl #2]
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry31:
+	ldr	lr, [tmp1, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r3, lr
+	bcs	array_bound_exception_jpc_1_r3
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r3
+	strb	r2, [tmp1, #BASE_OFFSET_BYTE]
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(castore,sastore) {
+	POP	r3, tmp1
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, -r2, lsl #2]
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry32:
+	ldr	lr, [tmp1, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r3, lr
+	bcs	array_bound_exception_jpc_1_r3
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r3, lsl #1
+	strh	r2, [tmp1, #BASE_OFFSET_SHORT]
+	DISPATCH_FINISH
+}
+
+@ --- load; dataop -------------------------------------------------------
+
+(iload_0,iload_1,iload_2,iload_3)
+(iadd)
+{
+	POP	tmp2
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	add	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(iadd) {
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	POP	tmp1
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(isub)
+{
+	POP	tmp2
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	sub	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(isub) {
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	POP	tmp1
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(imul)
+{
+	POP	r2
+	rsb	lr, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	mul	r3, r2, lr
+	DISPATCH_NEXT
+	PUSH	r3
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(imul) {
+	DISPATCH_START	\seq_len
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+	mul	lr, r3, r2
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ineg)
+{
+	rsb	lr, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	rsb	lr, lr, #0
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(ineg) {
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+	rsb	r2, r2, #0
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ishl)
+{
+	POP	r2
+	rsb	lr, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	mov	lr, r2, lsl lr
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(ishl) {
+	DISPATCH_START	\seq_len
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+	mov	r2, r3, lsl r2
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ishr)
+{
+	POP	r2
+	rsb	lr, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	mov	lr, r2, asr lr
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(ishr) {
+	DISPATCH_START	\seq_len
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+	mov	r2, r3, asr r2
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(iushr)
+{
+	POP	r2
+	rsb	lr, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	mov	lr, r2, lsr lr
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(iushr) {
+	ldrb	r2, [jpc, #1]
+	DISPATCH_START	\seq_len
+	POP	r3
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+	mov	r2, r3, lsr r2
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(iand)
+{
+	POP	tmp2
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	and	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(iand) {
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	POP	tmp1
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	and	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ior)
+{
+	POP	tmp2
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	orr	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(ior) {
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	POP	tmp1
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	orr	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ixor)
+{
+	POP	tmp2
+	rsb	tmp1, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	eor	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(ixor) {
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	POP	tmp1
+	DISPATCH_NEXT
+	ldr	tmp2, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	eor	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(i2c)
+{
+	rsb	lr, r0, #opc_iload_0
+	DISPATCH_START	\seq_len
+	ldr	lr, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+        mov     lr, lr, asl #16
+        mov     lr, lr, lsr #16
+	PUSH	lr
+	DISPATCH_FINISH
+}
+
+(iload,aload,fload)(i2c) {
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, -r2, lsl #2]
+	DISPATCH_NEXT
+        mov     r2, r2, asl #16
+        mov     r2, r2, lsr #16
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+#ifdef NOTICE_SAFEPOINTS
+
+@ --- load; branch -------------------------------------------------------
+
+(iload_0,iload_1,iload_2,iload_3)
+(ifeq,ifnull)
+{
+	rsb	r3, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r3, [locals, r3, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, #0
+	beq	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(ifeq,ifnull) {
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r3, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, #0
+	beq	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ifne,ifnonnull)
+{
+	rsb	r3, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r3, [locals, r3, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, #0
+	bne	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(ifne,ifnonnull) {
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r3, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, #0
+	bne	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(iflt)
+{
+	rsb	r3, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r3, [locals, r3, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, #0
+	blt	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(iflt) {
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r3, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, #0
+	blt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ifge)
+{
+	rsb	r3, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r3, [locals, r3, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, #0
+	bge	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(ifge) {
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r3, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, #0
+	bge	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ifgt)
+{
+	rsb	r3, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r3, [locals, r3, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, #0
+	bgt	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(ifgt) {
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r3, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, #0
+	bgt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(ifle)
+{
+	rsb	r3, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r3, [locals, r3, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, #0
+	ble	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(ifle) {
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r3, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, #0
+	ble	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(if_icmpeq,if_acmpeq)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, r2
+	beq	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(if_icmpeq,if_acmpeq) {
+	POP	r3
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, r2
+	beq	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(if_icmpne,if_acmpne)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, r2
+	bne	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(if_icmpne,if_acmpne) {
+	POP	r3
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, r2
+	bne	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(if_icmplt)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, r2
+	blt	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(if_icmplt) {
+	POP	r3
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, r2
+	blt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(if_icmpge)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, r2
+	bge	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(if_icmpge) {
+	POP	r3
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, r2
+	bge	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(if_icmpgt)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, r2
+	bgt	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(if_icmpgt) {
+	POP	r3
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, r2
+	bgt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(if_icmple)
+{
+	POP	r3
+	rsb	r2, r0, #opc_iload_0
+        ldrsb   r1, [jpc, #2]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #3]
+        cmp     r3, r2
+	ble	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iload,aload,fload)(if_icmple) {
+	POP	r3
+	rsb	r2, r2, #0
+        ldrsb   r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+        ldrb    ip, [jpc, #4]
+        cmp     r3, r2
+	ble	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+@ --- load; return/invoke -------------------------------------------------
+
+(iload_0,iload_1,iload_2,iload_3)
+(ireturn,areturn,freturn)
+{
+	rsb	r0, r0, #opc_iload_0
+	ldr	tmp2, [istate, #ISTATE_MONITOR_BASE]	@ tmp2 = base
+	ldr	tmp1, [istate, #ISTATE_STACK_BASE]	@ tmp1 = end
+	ldr	r1, [locals, r0, lsl #2]
+	ldr	tmp_xxx, [istate, #ISTATE_THREAD]
+	cmp	tmp1, tmp2
+	bcc	1f
+2:
+	mov	r3, #0
+	ldr	stack, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r3, [tmp_xxx, #THREAD_LAST_JAVA_SP]
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [stack, #0]
+	ldrh	r0, [r0, #40]
+	str	r3, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r1, [stack, r0, lsl #2]!
+
+	str	stack, [tmp_xxx, #THREAD_JAVA_SP]
+
+	ldmfd	arm_sp!, {fast_regset, pc}
+1:
+	PUSH	r1
+	add	jpc, jpc, #1
+	bl	return_check_monitors
+	POP	r1
+	b	2b
+}
+
+(iload,aload,fload)(ireturn,areturn,freturn) {
+
+	ldr	tmp2, [istate, #ISTATE_MONITOR_BASE]	@ tmp2 = base
+	ldr	tmp1, [istate, #ISTATE_STACK_BASE]	@ tmp1 = end
+	ldr	r1, [locals, -r2, lsl #2]
+	ldr	tmp_xxx, [istate, #ISTATE_THREAD]
+	cmp	tmp1, tmp2
+	bcc	1f
+2:
+	mov	r3, #0
+	ldr	stack, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r3, [tmp_xxx, #THREAD_LAST_JAVA_SP]
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [stack, #0]
+	ldrh	r0, [r0, #40]
+	str	r3, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r1, [stack, r0, lsl #2]!
+
+	str	stack, [tmp_xxx, #THREAD_JAVA_SP]
+
+	ldmfd	arm_sp!, {fast_regset, pc}
+1:
+	PUSH	r1
+	add	jpc, jpc, #2
+	bl	return_check_monitors
+	POP	r1
+	b	2b
+}
+
+#endif // NOTICE_SAFEPOINTS
+
+(iload_0,iload_1,iload_2,iload_3)
+(invokeresolved)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_iload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeresolved
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(invokeresolved)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_aload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeresolved
+}
+
+(iload,aload,fload)(invokeresolved) {
+	ldr	r0, [locals, -r2, lsl #2]
+	add	jpc, jpc, #2
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeresolved
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(invokevfinal)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_iload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokevfinal
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(invokevfinal)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_aload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokevfinal
+}
+
+(iload,aload,fload)(invokevfinal) {
+	ldr	r0, [locals, -r2, lsl #2]
+	add	jpc, jpc, #2
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokevfinal
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(invokespecialresolved)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_iload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokespecialresolved
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(invokespecialresolved)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_aload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokespecialresolved
+}
+
+(iload,aload,fload)(invokespecialresolved) {
+	ldr	r0, [locals, -r2, lsl #2]
+	add	jpc, jpc, #2
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokespecialresolved
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(invokestaticresolved)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_iload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokestaticresolved
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(invokestaticresolved)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_aload_0
+	ldr	r0, [locals, r0, lsl #2]
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokestaticresolved
+}
+
+(iload,aload,fload)(invokestaticresolved) {
+	ldr	r0, [locals, -r2, lsl #2]
+	add	jpc, jpc, #2
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokestaticresolved
+
+}
+
+(iload_0,iload_1,iload_2,iload_3)
+(invokeinterface)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_iload_0
+	ldr	r0, [locals, r0, lsl #2]
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeinterface
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(invokeinterface)
+{
+	add	jpc, jpc, #1
+	rsb	r0, r0, #opc_aload_0
+	ldr	r0, [locals, r0, lsl #2]
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeinterface
+}
+
+(iload,aload,fload)(invokeinterface) {
+	ldr	r0, [locals, -r2, lsl #2]
+	add	jpc, jpc, #2
+        ldrb     r2, [jpc, #1]
+        ldrb     r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeinterface
+}
+
+(aload_0,aload_1,aload_2,aload_3)
+(igetfield)
+{
+	add	r0, r0, #opc_iaccess_0-opc_aload_0
+	strb	r0, [jpc]
+	DISPATCH_BYTECODE
+}
+
+@ 13 cycles
+(iload,aload,fload)(igetfield) {
+	ldrb	ip, [jpc, #4]
+	rsb	tmp1, r2, #0
+	ldrb	r3, [jpc, #3]
+	add	tmp2, constpool, ip, lsl #12
+	DISPATCH_START	5
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, r3, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry88:
+	ldr	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+@ --- iconst; store -------------------------------------------------
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)
+(istore_0,istore_1,istore_2,istore_3)
+{
+	sub	r3, r0, #opc_iconst_0
+	DISPATCH_START	\seq_len
+	rsb	r2, r1, #opc_istore_0
+	str	r3, [locals, r2, lsl #2]
+	DISPATCH_BYTECODE
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(astore,istore,fstore) {
+	ldrb	r2, [jpc, #2]
+	sub	r3, r0, #opc_iconst_0
+	DISPATCH_START	\seq_len
+	str	r3, [locals, -r2, lsl #2]
+	DISPATCH_BYTECODE
+}
+
+@ --- iconst; dataop -------------------------------------------------
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(iadd) {
+	sub	tmp1, r0, #opc_iconst_0
+	DISPATCH_START	\seq_len
+	POP	tmp2
+	DISPATCH_NEXT
+	add	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(isub) {
+	sub	tmp1, r0, #opc_iconst_0
+	DISPATCH_START	\seq_len
+	POP	tmp2
+	DISPATCH_NEXT
+	sub	tmp1, tmp2, tmp1
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(idiv) {
+	subs	lr, r0, #opc_iconst_2
+	DISPATCH_START	\seq_len
+	POP	tmp1
+	DISPATCH_NEXT
+	beq	5f
+	bcc	3f
+	cmp	lr, #(opc_iconst_4-opc_iconst_2)
+	beq	4f
+	bcc	2f
+@ divide by 5
+1:
+	mvn	lr, #0x198		@ Form 0x66666667 in lr
+	bic	lr, lr, #0x9800
+	add	lr, lr, lr, lsl #16
+	smull	a3, a4, tmp1, lr
+	mov	a3, tmp1, asr #31
+	rsb	tmp1, a3, a4, asr #1
+	b	6f
+@ divide by 3
+2:
+	mvn	lr, #0xa9		@ Form 0x55555556 in lr
+	bic	lr, lr, #0xaa00
+	add	lr, lr, lr, lsl #16
+        smull   a3, a4, tmp1, lr
+        sub     tmp1, a4, tmp1, asr #31
+	b	6f
+3:
+	cmp	lr, #(opc_iconst_0-opc_iconst_2)
+	beq	div_zero_jpc_1
+	rsbcc	tmp1, tmp1, #0		@ Divide by -1 or 1
+	b	6f
+@ divide by 4
+4:	movs	a4, tmp1
+	addmi	a4, a4, #3
+	mov	tmp1, a4, asr #2
+	b	6f
+@ divide by 2
+5:
+	add	tmp1, tmp1, tmp1, lsr #31
+	mov	tmp1, tmp1, asr #1
+6:
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(ishl) {
+	sub	tmp1, r0, #opc_iconst_0
+	DISPATCH_START	\seq_len
+	POP	r2
+	DISPATCH_NEXT
+	mov	tmp1, r2, lsl tmp1
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@ --- iconst; branch -------------------------------------------------
+
+#ifdef NOTICE_SAFEPOINTS
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(if_icmpeq) {
+	POP	r3
+	sub	r2, r0, #opc_iconst_0
+        ldrsb   r1, [jpc, #2]
+        cmp     r3, r2
+        ldrb    ip, [jpc, #3]
+	beq	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(if_icmpne) {
+	POP	r3
+	sub	r2, r0, #opc_iconst_0
+        ldrsb   r1, [jpc, #2]
+        cmp     r3, r2
+        ldrb    ip, [jpc, #3]
+	bne	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(if_icmplt) {
+	POP	r3
+	sub	r2, r0, #opc_iconst_0
+        ldrsb   r1, [jpc, #2]
+        cmp     r3, r2
+        ldrb    ip, [jpc, #3]
+	blt	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(if_icmpge) {
+	POP	r3
+	sub	r2, r0, #opc_iconst_0
+        ldrsb   r1, [jpc, #2]
+        cmp     r3, r2
+        ldrb    ip, [jpc, #3]
+	bge	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(if_icmpgt) {
+	POP	r3
+	sub	r2, r0, #opc_iconst_0
+        ldrsb   r1, [jpc, #2]
+        cmp     r3, r2
+        ldrb    ip, [jpc, #3]
+	bgt	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(if_icmple) {
+	POP	r3
+	sub	r2, r0, #opc_iconst_0
+        ldrsb   r1, [jpc, #2]
+        cmp     r3, r2
+        ldrb    ip, [jpc, #3]
+	ble	branch_taken_unsafe_1
+	DISPATCH 4
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(ireturn) {
+	ldr	tmp2, [istate, #ISTATE_MONITOR_BASE]	@ tmp2 = base
+	ldr	tmp1, [istate, #ISTATE_STACK_BASE]	@ tmp1 = end
+	sub	r1, r0, #opc_iconst_0
+	ldr	tmp_xxx, [istate, #ISTATE_THREAD]
+	cmp	tmp1, tmp2
+	bcc	1f
+2:
+	mov	r3, #0
+	ldr	stack, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r3, [tmp_xxx, #THREAD_LAST_JAVA_SP]
+	ldr	r0, [istate, #ISTATE_METHOD]
+	ldr	r3, [stack, #0]
+	ldrh	r0, [r0, #40]
+	str	r3, [tmp_xxx, #THREAD_TOP_ZERO_FRAME]
+	str	r1, [stack, r0, lsl #2]!
+
+	str	stack, [tmp_xxx, #THREAD_JAVA_SP]
+
+	ldmfd	arm_sp!, {fast_regset, pc}
+1:
+	PUSH	r1
+	add	jpc, jpc, #1
+	bl	return_check_monitors
+	POP	r1
+	b	2b
+}
+
+#endif // NOTICE_SAFEPOINTS
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(invokeresolved) {
+	add	jpc, jpc, #1
+	sub	r0, r0, #opc_iconst_0
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokeresolved
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(invokevfinal) {
+	add	jpc, jpc, #1
+	sub	r0, r0, #opc_iconst_0
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokevfinal
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(invokestaticresolved) {
+	add	jpc, jpc, #1
+	sub	r0, r0, #opc_iconst_0
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokestaticresolved
+}
+
+(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5)(invokespecialresolved) {
+	add	jpc, jpc, #1
+	sub	r0, r0, #opc_iconst_0
+	ldrb	r2, [jpc, #1]
+	ldrb	r1, [jpc, #2]
+	PUSH	r0
+	b	do_invokespecialresolved
+}
+
+@# --- Bytecode sequences iaload; xxx -----------------------------------------------
+
+(iaload,faload,aaload)(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5) {
+	sub	r2, r1, #opc_iconst_0
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry38:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #12]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(bipush) {
+	ldrsb	r2, [jpc, #2]
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+.abortentry39:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_3_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #12]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(sipush) {
+	ldrsb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #3]
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	orr	r2, tmp1, r2, lsl #8
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_4
+.abortentry40:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_4_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #12]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(iload,fload,aload) {
+	ldrb	r2, [jpc, #2]
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, -r2, lsl #2]
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+.abortentry41:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_3_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	rsb	r2, r1, #opc_iload_0
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, r2, lsl #2]
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry42:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)
+(aload_0,aload_1,aload_2,aload_3)
+{
+	rsb	r2, r1, #opc_aload_0
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	ldr	r2, [locals, r2, lsl #2]
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry42_1:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	r2, r3
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(iaload,faload,aaload)
+{
+	POP	r2, r3			@ r2 = index, r3 = arrayref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_0
+.abortentry43:
+	ldr	tmp1, [r3, #8]		@ tmp1 = length
+	DISPATCH_START	\seq_len
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_2
+	add	r3, r3, r2, lsl #2
+	POP	lr			@ r2 = index, lr = arrayref
+	ldr	r2, [r3, #BASE_OFFSET_WORD]
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry44:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_1
+	add	lr, lr, r2, lsl #2
+	ldr	r2, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	r2
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(astore,istore,fstore) {
+	ldrb	r2, [jpc, #2]
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_3
+.abortentry45:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_3_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	str	r3, [locals, -r2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)
+(istore_0,istore_1,istore_2,istore_3) {
+	rsb	r2, r1, #opc_istore_0
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry46:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	r3, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	str	r3, [locals, r2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(iastore,fastore) {
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_0
+.abortentry47:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_START	\seq_len
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+
+	POP	r2, r3		@ tmp1 = value, r2 = index, r3 = arrayref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry48:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(bastore) {
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_0
+.abortentry49:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_START	\seq_len
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+
+	POP	r2, r3		@ tmp1 = value, r2 = index, r3 = arrayref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry50:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2
+	strb	tmp1, [r3, #BASE_OFFSET_BYTE]
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(castore,sastore) {
+	POP	r3, lr			@ r3 = index, lr = arrayref
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_0
+.abortentry51:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_START	\seq_len
+	cmp	r3, tmp1
+	bcs	array_bound_exception_jpc_2_r3
+	add	lr, lr, r3, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+
+	POP	r2, r3		@ tmp1 = value, r2 = index, r3 = arrayref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry52:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #1
+	strh	tmp1, [r3, #BASE_OFFSET_BYTE]
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(iand) {
+	POP	r2, r3			@ r2 = index, r3 = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry58:
+	ldr	tmp1, [r3, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_2
+	add	r3, r3, r2, lsl #2
+	ldr	tmp1, [r3, #BASE_OFFSET_WORD]		@ tmp1 = tos
+	POP	r2			@ r2 = tosm1
+	DISPATCH_NEXT
+	and	tmp1, r2, tmp1		@ tosm1 <dop> tos
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(ior) {
+	POP	r2, r3			@ r2 = index, r3 = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry59:
+	ldr	tmp1, [r3, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_2
+	add	r3, r3, r2, lsl #2
+	ldr	tmp1, [r3, #BASE_OFFSET_WORD]		@ tmp1 = tos
+	POP	r2			@ r2 = tosm1
+	DISPATCH_NEXT
+	orr	tmp1, r2, tmp1		@ tosm1 <dop> tos
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iaload,faload,aaload)(ixor) {
+	POP	r2, r3			@ r2 = index, r3 = arrayref
+	DISPATCH_START	\seq_len
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_2
+.abortentry60:
+	ldr	tmp1, [r3, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_2
+	add	r3, r3, r2, lsl #2
+	ldr	tmp1, [r3, #BASE_OFFSET_WORD]		@ tmp1 = tos
+	POP	r2			@ r2 = tosm1
+	DISPATCH_NEXT
+	eor	tmp1, r2, tmp1		@ tosm1 <dop> tos
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@ ---- iadd; xxx ------------------------------------------------------------
+
+(iadd)(iload,fload,aload) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(iadd)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	r3, r1, #opc_iload_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(iadd)(iaload,aaload,faload) {
+	POP	r2, r3, lr		@ lr = ref
+	DISPATCH_START	\seq_len
+	add	r2, r3, r2		@ r2 = index
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry73:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_1
+	add	lr, lr, r2, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iadd)(istore) {
+	mov	r0, #opc_iadd_u4store
+	strb	r0, [jpc]
+	b	do_iadd_u4store
+}
+
+(iadd)
+(istore_0,istore_1,istore_2,istore_3) {
+	mov	r0, #opc_iadd_istore_N
+	strb	r0, [jpc]
+	b	do_iadd_istore_N
+}
+
+(iadd)(iastore,fastore) {
+	POP	r2, r3
+	DISPATCH_START	\seq_len
+	add	tmp1, r3, r2		@ tmp1 = value
+	POP	r2, r3			@ r2, index, r3 = ref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry106:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(iadd)(iadd) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	add	tmp2, r3, r2
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iadd)(isub) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	add	tmp2, r3, r2
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iadd)(iinc) {
+	POP	tmp1, lr
+	DISPATCH_START	\seq_len
+	add	tmp1, lr, tmp1
+        ldrb    r3, [jpc, #-2]	@ jpc now points to next bc
+        ldrsb   r2, [jpc, #-1]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	ldr	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r2
+	str	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_FINISH
+}
+@ ---- sub; xxx ------------------------------------------------------------
+
+(isub)(iload,fload,aload) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(isub)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	r3, r1, #opc_iload_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(isub)(iaload,aaload,faload) {
+	POP	r2, r3, lr		@ lr = ref
+	DISPATCH_START	\seq_len
+	sub	r2, r3, r2		@ r2 = index
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry74:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_1
+	add	lr, lr, r2, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(isub)(istore) {
+	mov	r0, #opc_isub_u4store
+	strb	r0, [jpc]
+	b	do_isub_u4store
+}
+
+(isub)
+(istore_0,istore_1,istore_2,istore_3) {
+	mov	r0, #opc_isub_istore_N
+	strb	r0, [jpc]
+	b	do_isub_istore_N
+}
+
+(isub)(iastore,fastore) {
+	POP	r2, r3
+	DISPATCH_START	\seq_len
+	sub	tmp1, r3, r2		@ tmp1 = value
+	POP	r2, r3			@ r2, index, r3 = ref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry105:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(isub)(iadd) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	sub	tmp2, r3, r2
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(isub)(isub) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	sub	tmp2, r3, r2
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(isub)(iinc) {
+	POP	tmp1, lr
+	DISPATCH_START	\seq_len
+	sub	tmp1, lr, tmp1
+        ldrb    r3, [jpc, #-2]	@ jpc now points to next bc
+        ldrsb   r2, [jpc, #-1]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	ldr	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r2
+	str	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_FINISH
+}
+@ ---- iand; xxx ------------------------------------------------------------
+
+(iand)(iload,fload,aload) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	and	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(iand)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	r3, r1, #opc_iload_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	and	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(iand)(iaload,aaload,faload) {
+	POP	r2, r3, lr		@ lr = ref
+	DISPATCH_START	\seq_len
+	and	r2, r3, r2		@ r2 = index
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry75:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_1
+	add	lr, lr, r2, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iand)(istore) {
+	mov	r0, #opc_iand_u4store
+	strb	r0, [jpc]
+	b	do_iand_u4store
+}
+
+(iand)
+(istore_0,istore_1,istore_2,istore_3) {
+	mov	r0, #opc_iand_istore_N
+	strb	r0, [jpc]
+	b	do_iand_istore_N
+}
+
+(iand)(iastore,fastore) {
+	POP	r2, r3
+	DISPATCH_START	\seq_len
+	and	tmp1, r3, r2		@ tmp1 = value
+	POP	r2, r3			@ r2, index, r3 = ref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry107:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(iand)(iadd) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	and	tmp2, r3, r2
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iand)(isub) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	and	tmp2, r3, r2
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iand)(iinc) {
+	POP	tmp1, lr
+	DISPATCH_START	\seq_len
+	and	tmp1, lr, tmp1
+        ldrb    r3, [jpc, #-2]	@ jpc now points to next bc
+        ldrsb   r2, [jpc, #-1]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	ldr	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r2
+	str	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_FINISH
+}
+@ ---- ior; xxx ------------------------------------------------------------
+
+(ior)(iload,fload,aload) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	orr	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(ior)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	r3, r1, #opc_iload_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	orr	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(ior)(iaload,aaload,faload) {
+	POP	r2, r3, lr		@ lr = ref
+	DISPATCH_START	\seq_len
+	orr	r2, r3, r2		@ r2 = index
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry76:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_1
+	add	lr, lr, r2, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(ior)(istore) {
+	mov	r0, #opc_ior_u4store
+	strb	r0, [jpc]
+	b	do_ior_u4store
+}
+
+(ior)
+(istore_0,istore_1,istore_2,istore_3) {
+	mov	r0, #opc_ior_istore_N
+	strb	r0, [jpc]
+	b	do_ior_istore_N
+}
+
+(ior)(iastore,fastore) {
+	POP	r2, r3
+	DISPATCH_START	\seq_len
+	orr	tmp1, r3, r2		@ tmp1 = value
+	POP	r2, r3			@ r2, index, r3 = ref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry108:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(ior)(iadd) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	orr	tmp2, r3, r2
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(ior)(isub) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	orr	tmp2, r3, r2
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(ior)(iinc) {
+	POP	tmp1, lr
+	DISPATCH_START	\seq_len
+	orr	tmp1, lr, tmp1
+        ldrb    r3, [jpc, #-2]	@ jpc now points to next bc
+        ldrsb   r2, [jpc, #-1]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	ldr	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r2
+	str	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ ---- ixor; xxx ------------------------------------------------------------
+
+(ixor)(iload,fload,aload) {
+	ldrb	r3, [jpc, #2]
+	DISPATCH_START	\seq_len
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	eor	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(ixor)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	DISPATCH_START	\seq_len
+	rsb	r3, r1, #opc_iload_0
+	POP	tmp2, tmp1
+	DISPATCH_NEXT
+	ldr	r3, [locals, r3, lsl #2]
+	eor	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(ixor)(iaload,aaload,faload) {
+	POP	r2, r3, lr		@ lr = ref
+	DISPATCH_START	\seq_len
+	eor	r2, r3, r2		@ r2 = index
+	SW_NPC	cmp	lr, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry77:
+	ldr	tmp1, [lr, #8]		@ tmp1 = length
+	DISPATCH_NEXT
+	cmp	r2, tmp1
+	bcs	array_bound_exception_jpc_1
+	add	lr, lr, r2, lsl #2
+	ldr	tmp1, [lr, #BASE_OFFSET_WORD]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(ixor)(istore) {
+	mov	r0, #opc_ixor_u4store
+	strb	r0, [jpc]
+	b	do_ixor_u4store
+}
+
+(ixor)
+(istore_0,istore_1,istore_2,istore_3) {
+	mov	r0, #opc_ixor_istore_N
+	strb	r0, [jpc]
+	b	do_ixor_istore_N
+}
+
+(ixor)(iastore,fastore) {
+	POP	r2, r3
+	DISPATCH_START	\seq_len
+	eor	tmp1, r3, r2		@ tmp1 = value
+	POP	r2, r3			@ r2, index, r3 = ref
+	SW_NPC	cmp	r3, #0
+	SW_NPC	beq	null_ptr_exception_jpc_1
+.abortentry109:
+	ldr	lr, [r3, #8]		@ lr = limit
+	DISPATCH_NEXT
+	cmp	r2, lr
+	bcs	array_bound_exception_jpc_1
+	DISPATCH_NEXT
+	add	r3, r3, r2, lsl #2
+	str	tmp1, [r3, #BASE_OFFSET_WORD]
+	DISPATCH_FINISH
+}
+
+(ixor)(iadd) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	eor	tmp2, r3, r2
+	DISPATCH_NEXT
+	add	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+        DISPATCH_FINISH
+}
+
+(ixor)(isub) {
+	DISPATCH_START	\seq_len
+	POP	r2, r3, tmp1
+	DISPATCH_NEXT
+	eor	tmp2, r3, r2
+	DISPATCH_NEXT
+	sub	tmp2, tmp1, tmp2
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(ixor)(iinc) {
+	POP	tmp1, lr
+	DISPATCH_START	\seq_len
+	eor	tmp1, lr, tmp1
+        ldrb    r3, [jpc, #-2]	@ jpc now points to next bc
+        ldrsb   r2, [jpc, #-1]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	ldr	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_NEXT
+	add	tmp1, tmp1, r2
+	str	tmp1, [locals, -r3, lsl #2]
+	DISPATCH_FINISH
+}
+
+@ --- iinc; xxx --------------------------------------------------------------
+
+(iinc)(iconst_m1,iconst_0,iconst_1,iconst_2,iconst_3,iconst_4,iconst_5) {
+        ldrsb   tmp1, [jpc, #2]
+	sub	lr, r1, #opc_iconst_0
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	ldr	r3, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	add	r3, r3, tmp1
+	DISPATCH_NEXT
+	PUSH	lr
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	str	r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iinc)(iload,aload,fload) {
+	ldrb	lr, [jpc, #4]
+        ldrsb   tmp1, [jpc, #2]
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	ldr	r3, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	rsb	lr, lr, #0
+	DISPATCH_NEXT
+	add	r3, r3, tmp1
+	DISPATCH_NEXT
+	str	r3, [locals, tmp2, lsl #2]
+	ldr	tmp1, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iinc)
+(iload_0,iload_1,iload_2,iload_3)
+{
+	rsb	lr, r1, #opc_iload_0
+        ldrsb   tmp1, [jpc, #2]
+	DISPATCH_START	\seq_len
+	rsb	tmp2, r2, #0
+	ldr	r3, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	add	r3, r3, tmp1
+	DISPATCH_NEXT
+	str	r3, [locals, tmp2, lsl #2]
+	DISPATCH_NEXT
+	ldr	tmp1, [locals, lr, lsl #2]
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@###############################################################################
+@# Optimised bytecode triples
+@###############################################################################
+
+(iaccess_0,iaccess_1,iaccess_2,iaccess_3)
+(iload,fload,aload) {
+	ldrb	r2, [jpc, #3]
+	rsb	tmp1, r0, #opc_iaccess_0
+	ldrb	r3, [jpc, #2]
+	add	tmp2, constpool, r2, lsl #12
+	DISPATCH_START	6
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, r3, lsl #4
+	ldrb	r3, [jpc, #-1]
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_5
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	rsb	r3, r3, #0
+.abortentry89:
+	ldr	tmp2, [tmp1, tmp2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(iaccess_0,iaccess_1,iaccess_2,iaccess_3)
+(iload_0,iload_1,iload_2,iload_3) {
+	ldrb	r2, [jpc, #3]
+	rsb	tmp1, r0, #opc_iaccess_0
+	ldrb	ip, [jpc, #2]
+	add	tmp2, constpool, r2, lsl #12
+	DISPATCH_START	5
+	rsb	r3, r1, #opc_iload_0
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, ip, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_4
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+.abortentry90:
+	ldr	tmp2, [tmp1, tmp2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	PUSH	r3, tmp2
+	DISPATCH_FINISH
+}
+
+(iaccess_0,iaccess_1,iaccess_2,iaccess_3)
+(iadd) {
+	ldrb	r2, [jpc, #3]
+	rsb	tmp1, r0, #opc_iaccess_0
+	ldrb	ip, [jpc, #2]
+	add	tmp2, constpool, r2, lsl #12
+	DISPATCH_START	5
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	add	tmp2, ip, lsl #4
+	DISPATCH_NEXT
+	SW_NPC	cmp	tmp1, #0
+	SW_NPC	beq	null_ptr_exception_jpc_4
+	DISPATCH_NEXT
+        ldr     tmp2, [tmp2, #CP_OFFSET+8]
+	DISPATCH_NEXT
+	POP	r3
+.abortentry91:
+	ldr	tmp2, [tmp1, tmp2]
+	DISPATCH_NEXT
+	add	tmp2, tmp2, r3
+	PUSH	tmp2
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(iadd)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+        ldrb    r2, [jpc, #1-\seq_len]
+        DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        sub     tmp1, r2, #opc_iconst_0
+        DISPATCH_NEXT
+        add     r3, r3, tmp1
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(isub)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+        ldrb    r2, [jpc, #1-\seq_len]
+        DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        sub     tmp1, r2, #opc_iconst_0
+        DISPATCH_NEXT
+        sub     r3, r3, tmp1
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(iand)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+        ldrb    r2, [jpc, #1-\seq_len]
+        DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        sub     tmp1, r2, #opc_iconst_0
+        DISPATCH_NEXT
+        and     r3, r3, tmp1
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(ior)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+        ldrb    r2, [jpc, #1-\seq_len]
+        DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        sub     tmp1, r2, #opc_iconst_0
+        DISPATCH_NEXT
+        orr     r3, r3, tmp1
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(ixor)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+        ldrb    r2, [jpc, #1-\seq_len]
+        DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        sub     tmp1, r2, #opc_iconst_0
+        DISPATCH_NEXT
+        eor     r3, r3, tmp1
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(idiv)
+{
+	rsb	tmp1, r0, #opc_iload_0_iconst_N
+	subs	lr, r2, #opc_iconst_2
+	DISPATCH_START	\seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	DISPATCH_NEXT
+	beq	5f
+	bcc	3f
+	cmp	lr, #(opc_iconst_4-opc_iconst_2)
+	beq	4f
+	bcc	2f
+@ divide by 5
+1:
+	mvn	lr, #0x198		@ Form 0x66666667 in lr
+	bic	lr, lr, #0x9800
+	add	lr, lr, lr, lsl #16
+	smull	a3, a4, tmp1, lr
+	mov	a3, tmp1, asr #31
+	rsb	tmp1, a3, a4, asr #1
+	b	6f
+@ divide by 3
+2:
+	mvn	lr, #0xa9		@ Form 0x55555556 in lr
+	bic	lr, lr, #0xaa00
+	add	lr, lr, lr, lsl #16
+        smull   a3, a4, tmp1, lr
+        sub     tmp1, a4, tmp1, asr #31
+	b	6f
+3:
+	cmp	lr, #(opc_iconst_0-opc_iconst_2)
+	beq	div_zero_jpc_1
+	rsbcc	tmp1, tmp1, #0		@ Divide by -1 or 1
+	b	6f
+@ divide by 4
+4:	movs	a4, tmp1
+	addmi	a4, a4, #3
+	mov	tmp1, a4, asr #2
+	b	6f
+@ divide by 2
+5:
+	add	tmp1, tmp1, tmp1, lsr #31
+	mov	tmp1, tmp1, asr #1
+6:
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iconst_N)
+(iadd)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        DISPATCH_NEXT
+        ldr     r2, [locals, r2, lsl #2]
+        sub     r3, r3, #opc_iconst_0
+        DISPATCH_NEXT
+        add     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iconst_N)
+(isub)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        DISPATCH_NEXT
+        ldr     r2, [locals, r2, lsl #2]
+        sub     r3, r3, #opc_iconst_0
+        DISPATCH_NEXT
+        sub     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iconst_N)
+(iand)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        DISPATCH_NEXT
+        ldr     r2, [locals, r2, lsl #2]
+        sub     r3, r3, #opc_iconst_0
+        DISPATCH_NEXT
+        and     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iconst_N)
+(ior)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        DISPATCH_NEXT
+        ldr     r2, [locals, r2, lsl #2]
+        sub     r3, r3, #opc_iconst_0
+        DISPATCH_NEXT
+        orr     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+@ r2 = [jpc, #1]
+(iload_iconst_N)
+(ixor)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        DISPATCH_NEXT
+        ldr     r2, [locals, r2, lsl #2]
+        sub     r3, r3, #opc_iconst_0
+        DISPATCH_NEXT
+        eor     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(idiv)
+{
+	ldrb	lr, [jpc, #2]
+	rsb	tmp1, r2, #0
+        DISPATCH_START  \seq_len
+	ldr	tmp1, [locals, tmp1, lsl #2]
+	subs	lr, lr, #opc_iconst_2
+	DISPATCH_NEXT
+	beq	5f
+	bcc	3f
+	cmp	lr, #(opc_iconst_4-opc_iconst_2)
+	beq	4f
+	bcc	2f
+@ divide by 5
+1:
+	mvn	lr, #0x198		@ Form 0x66666667 in lr
+	bic	lr, lr, #0x9800
+	add	lr, lr, lr, lsl #16
+	smull	a3, a4, tmp1, lr
+	mov	a3, tmp1, asr #31
+	rsb	tmp1, a3, a4, asr #1
+	b	6f
+@ divide by 3
+2:
+	mvn	lr, #0xa9		@ Form 0x55555556 in lr
+	bic	lr, lr, #0xaa00
+	add	lr, lr, lr, lsl #16
+        smull   a3, a4, tmp1, lr
+        sub     tmp1, a4, tmp1, asr #31
+	b	6f
+3:
+	cmp	lr, #(opc_iconst_0-opc_iconst_2)
+	beq	div_zero_jpc_1
+	rsbcc	tmp1, tmp1, #0		@ Divide by -1 or 1
+	b	6f
+@ divide by 4
+4:	movs	a4, tmp1
+	addmi	a4, a4, #3
+	mov	tmp1, a4, asr #2
+	b	6f
+@ divide by 2
+5:
+	add	tmp1, tmp1, tmp1, lsr #31
+	mov	tmp1, tmp1, asr #1
+6:
+	DISPATCH_NEXT
+	PUSH	tmp1
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(iadd)
+{
+        ldrb    r3, [jpc, #3]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        add     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(iadd)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #opc_iload_0
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        add     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(iadd)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        add     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(iadd)
+{
+	rsb	r3, r2, #opc_iload_0
+	rsb	r2, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        add     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(isub)
+{
+        ldrb    r3, [jpc, #3]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        sub     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(isub)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #opc_iload_0
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        sub     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(isub)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        sub     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(isub)
+{
+	rsb	r3, r2, #opc_iload_0
+	rsb	r2, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        sub     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(iand)
+{
+        ldrb    r3, [jpc, #3]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        and     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(iand)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #opc_iload_0
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        and     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(iand)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        and     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(iand)
+{
+	rsb	r3, r2, #opc_iload_0
+	rsb	r2, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        and     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(ior)
+{
+        ldrb    r3, [jpc, #3]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        orr     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(ior)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #opc_iload_0
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        orr     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(ior)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        orr     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(ior)
+{
+	rsb	r3, r2, #opc_iload_0
+	rsb	r2, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+        ldr     r2, [locals, r2, lsl #2]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        orr     r3, r2, r3
+	DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(ixor)
+{
+        ldrb    r3, [jpc, #3]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        eor     r3, r2, r3
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(ixor)
+{
+        ldrb    r3, [jpc, #2]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #opc_iload_0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        eor     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(ixor)
+{
+        ldrb    r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+        DISPATCH_START  \seq_len
+        rsb     r3, r3, #0
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        eor     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+        DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(ixor)
+{
+	rsb	r3, r2, #opc_iload_0
+	rsb	r2, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+        ldr     r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        eor     r3, r2, r3
+        DISPATCH_NEXT
+        DISPATCH_NEXT
+        PUSH    r3
+	DISPATCH_FINISH
+}
+
+@ Former quads
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(iadd_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        add     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(iadd_u4store)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #5]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        add     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(iadd_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        add     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(iadd_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #4]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #opc_istore_0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        add     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(isub_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(isub_u4store)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #5]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(isub_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(isub_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #4]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #opc_istore_0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(iand_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        and     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(iand_u4store)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #5]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        and     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(iand_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        and     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(iand_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #4]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #opc_istore_0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        and     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(ior_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(ior_u4store)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #5]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(ior_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(ior_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #4]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #opc_istore_0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(ixor_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(ixor_u4store)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #5]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(ixor_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iconst_N
+        DISPATCH_START  \seq_len
+	sub	r2, r2, #opc_iconst_0
+	DISPATCH_NEXT
+        ldrb    tmp1, [jpc, #-1]
+        ldr     r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iconst_N)
+(ixor_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+        ldrb    lr, [jpc, #4]
+        rsb     r2, r2, #0
+        DISPATCH_START  \seq_len
+	sub	r3, r3, #opc_iconst_0
+	DISPATCH_NEXT
+        rsb     tmp2, lr, #opc_istore_0
+	DISPATCH_NEXT
+        ldr     tmp1, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+#ifdef NOTICE_SAFEPOINTS
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(if_icmpeq,if_acmpeq)
+{
+	ldrb	r3, [jpc, #1]
+	rsb	r2, r0, #opc_iload_0_iconst_N
+	ldrsb	r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	beq	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iconst_N)
+(if_icmpeq,if_acmpeq)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	beq	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(if_icmpne,if_acmpne)
+{
+	ldrb	r3, [jpc, #1]
+	rsb	r2, r0, #opc_iload_0_iconst_N
+	ldrsb	r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	bne	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iconst_N)
+(if_icmpne,if_acmpne)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bne	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(if_icmplt)
+{
+	ldrb	r3, [jpc, #1]
+	rsb	r2, r0, #opc_iload_0_iconst_N
+	ldrsb	r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	blt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iconst_N)
+(if_icmplt)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	blt	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(if_icmpge)
+{
+	ldrb	r3, [jpc, #1]
+	rsb	r2, r0, #opc_iload_0_iconst_N
+	ldrsb	r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	bge	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iconst_N)
+(if_icmpge)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bge	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(if_icmpgt)
+{
+	ldrb	r3, [jpc, #1]
+	rsb	r2, r0, #opc_iload_0_iconst_N
+	ldrsb	r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	bgt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iconst_N)
+(if_icmpgt)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bgt	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iconst_N,iload_1_iconst_N,iload_2_iconst_N,iload_3_iconst_N)
+(if_icmple)
+{
+	ldrb	r3, [jpc, #1]
+	rsb	r2, r0, #opc_iload_0_iconst_N
+	ldrsb	r1, [jpc, #3]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	ble	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iconst_N)
+(if_icmple)
+{
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	ldr	r2, [locals, r2, lsl #2]
+	sub	r3, r3, #opc_iconst_0
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	ble	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+#endif // NOTICE_SAFEPOINTS
+
+(iload_iload)
+(iadd_istore_N)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	add	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(iadd_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #4]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	add	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(iadd_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #4]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        add     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(iadd_istore_N)
+{
+	ldrb	tmp1, [jpc, #3]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        add     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(isub_istore_N)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	sub	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(isub_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #4]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	sub	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(isub_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #4]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(isub_istore_N)
+{
+	ldrb	tmp1, [jpc, #3]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(iand_istore_N)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	and	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(iand_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #4]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	and	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(iand_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #4]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        and     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(iand_istore_N)
+{
+	ldrb	tmp1, [jpc, #3]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        and     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(ior_istore_N)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	orr	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(ior_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #4]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	orr	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(ior_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #4]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(ior_istore_N)
+{
+	ldrb	tmp1, [jpc, #3]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(ixor_istore_N)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	eor	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(ixor_istore_N)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #4]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #opc_istore_0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	eor	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(ixor_istore_N)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #4]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(ixor_istore_N)
+{
+	ldrb	tmp1, [jpc, #3]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #opc_istore_0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(iadd_u4store)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #6]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	add	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(iadd_u4store)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	add	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(iadd_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #5]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        add     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(iadd_u4store)
+{
+	ldrb	tmp1, [jpc, #4]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        add     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(isub_u4store)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #6]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	sub	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(isub_u4store)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	sub	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(isub_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #5]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(isub_u4store)
+{
+	ldrb	tmp1, [jpc, #4]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        sub     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(iand_u4store)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #6]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	and	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(iand_u4store)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	and	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(iand_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #5]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        and     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(iand_u4store)
+{
+	ldrb	tmp1, [jpc, #4]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        and     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(ior_u4store)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #6]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	orr	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(ior_u4store)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	orr	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(ior_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #5]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(ior_u4store)
+{
+	ldrb	tmp1, [jpc, #4]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        orr     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload)
+(ixor_u4store)
+{
+	ldrb	r3, [jpc, #3]
+	ldrb	lr, [jpc, #6]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	eor	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_iload_N)
+(ixor_u4store)
+{
+	ldrb	r3, [jpc, #2]
+	ldrb	lr, [jpc, #5]
+	rsb	r2, r2, #0
+        DISPATCH_START  \seq_len
+	rsb	r3, r3, #opc_iload_0
+	DISPATCH_NEXT
+	rsb	tmp2, lr, #0
+	ldr	tmp1, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	DISPATCH_NEXT
+	DISPATCH_NEXT
+	eor	r3, tmp1, r3
+	DISPATCH_NEXT
+        str     r3, [locals, tmp2, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(ixor_u4store)
+{
+        rsb     r3, r0, #opc_iload_0_iload
+	ldrb	r2, [jpc, #2]
+	ldrb	tmp1, [jpc, #5]
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(ixor_u4store)
+{
+	ldrb	tmp1, [jpc, #4]
+	rsb	r3, r0, #opc_iload_0_iload_N
+        DISPATCH_START  \seq_len
+	rsb	r2, r2, #opc_iload_0
+	DISPATCH_NEXT
+        ldr     r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	DISPATCH_NEXT
+        eor     r3, r3, r2
+	DISPATCH_NEXT
+	rsb	tmp1, tmp1, #0
+	DISPATCH_NEXT
+        str     r3, [locals, tmp1, lsl #2]
+	DISPATCH_FINISH
+}
+
+#ifdef NOTICE_SAFEPOINTS
+
+(iload_iload)
+(if_icmpeq,if_acmpeq) {
+	ldrb	r3, [jpc, #3]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #5]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #6]
+	cmp	r2, r3
+	beq	branch_taken_unsafe_4
+	DISPATCH 7
+}
+
+(iload_iload_N)
+(if_icmpeq,if_acmpeq) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #opc_iload_0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	beq	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(if_icmpeq,if_acmpeq) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	beq	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(if_icmpeq,if_acmpeq) {
+	rsb	r3, r2, #opc_iload_0
+	ldrsb	r1, [jpc, #3]
+	rsb	r2, r0, #opc_iload_0_iload_N
+	ldr	r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	beq	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iload)
+(if_icmpne,if_acmpne) {
+	ldrb	r3, [jpc, #3]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #5]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #6]
+	cmp	r2, r3
+	bne	branch_taken_unsafe_4
+	DISPATCH 7
+}
+
+(iload_iload_N)
+(if_icmpne,if_acmpne) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #opc_iload_0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bne	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(if_icmpne,if_acmpne) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bne	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(if_icmpne,if_acmpne) {
+	rsb	r3, r2, #opc_iload_0
+	ldrsb	r1, [jpc, #3]
+	rsb	r2, r0, #opc_iload_0_iload_N
+	ldr	r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	bne	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iload)
+(if_icmplt) {
+	ldrb	r3, [jpc, #3]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #5]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #6]
+	cmp	r2, r3
+	blt	branch_taken_unsafe_4
+	DISPATCH 7
+}
+
+(iload_iload_N)
+(if_icmplt) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #opc_iload_0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	blt	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(if_icmplt) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	blt	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(if_icmplt) {
+	rsb	r3, r2, #opc_iload_0
+	ldrsb	r1, [jpc, #3]
+	rsb	r2, r0, #opc_iload_0_iload_N
+	ldr	r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	blt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iload)
+(if_icmpge) {
+	ldrb	r3, [jpc, #3]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #5]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #6]
+	cmp	r2, r3
+	bge	branch_taken_unsafe_4
+	DISPATCH 7
+}
+
+(iload_iload_N)
+(if_icmpge) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #opc_iload_0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bge	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(if_icmpge) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bge	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(if_icmpge) {
+	rsb	r3, r2, #opc_iload_0
+	ldrsb	r1, [jpc, #3]
+	rsb	r2, r0, #opc_iload_0_iload_N
+	ldr	r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	bge	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iload)
+(if_icmpgt) {
+	ldrb	r3, [jpc, #3]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #5]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #6]
+	cmp	r2, r3
+	bgt	branch_taken_unsafe_4
+	DISPATCH 7
+}
+
+(iload_iload_N)
+(if_icmpgt) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #opc_iload_0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bgt	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(if_icmpgt) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	bgt	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(if_icmpgt) {
+	rsb	r3, r2, #opc_iload_0
+	ldrsb	r1, [jpc, #3]
+	rsb	r2, r0, #opc_iload_0_iload_N
+	ldr	r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	bgt	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+(iload_iload)
+(if_icmple) {
+	ldrb	r3, [jpc, #3]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #5]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #6]
+	cmp	r2, r3
+	ble	branch_taken_unsafe_4
+	DISPATCH 7
+}
+
+(iload_iload_N)
+(if_icmple) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r2, #0
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #opc_iload_0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	ble	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload,iload_1_iload,iload_2_iload,iload_3_iload)
+(if_icmple) {
+	ldrb	r3, [jpc, #2]
+	rsb	r2, r0, #opc_iload_0_iload
+	ldrsb	r1, [jpc, #4]
+	rsb	r3, r3, #0
+	ldr	r2, [locals, r2, lsl #2]
+	ldr	r3, [locals, r3, lsl #2]
+	ldrb	ip, [jpc, #5]
+	cmp	r2, r3
+	ble	branch_taken_unsafe_3
+	DISPATCH 6
+}
+
+(iload_0_iload_N,iload_1_iload_N,iload_2_iload_N,iload_3_iload_N)
+(if_icmple) {
+	rsb	r3, r2, #opc_iload_0
+	ldrsb	r1, [jpc, #3]
+	rsb	r2, r0, #opc_iload_0_iload_N
+	ldr	r3, [locals, r3, lsl #2]
+	ldr	r2, [locals, r2, lsl #2]
+	ldrb	ip, [jpc, #4]
+	cmp	r2, r3
+	ble	branch_taken_unsafe_2
+	DISPATCH 5
+}
+
+#endif
+
+#endif // FAST_BYTECODES

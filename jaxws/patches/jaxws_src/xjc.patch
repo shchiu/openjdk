@@ -1,0 +1,17 @@
+--- src/com/sun/tools/internal/xjc/reader/xmlschema/parser/SchemaConstraintChecker.java.prev       2008-10-21 15:50:20.000000000 +0100
++++ src/com/sun/tools/internal/xjc/reader/xmlschema/parser/SchemaConstraintChecker.java    2008-10-21 15:57:37.000000000 +0100
+@@ -66,6 +66,14 @@
+ 
+         SchemaFactory sf = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
+         sf.setErrorHandler(errorFilter);
++        try {
++            // By default the SchemaFactory imposes a limit of 5000 on
++            // xsd:sequence maxOccurs if a SecurityManager is
++            // installed.  This breaks the specification of xjc,
++            // causing TCK failures.
++            sf.setProperty("http://apache.org/xml/properties/security-manager", null);
++        } catch (SAXException e) {
++        }
+         if( entityResolver != null ) {
+             sf.setResourceResolver(new LSResourceResolver() {
+                 public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
