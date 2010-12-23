@@ -75,6 +75,7 @@ class CodeHeap : public CHeapObj {
   friend class VMStructs;
  private:
   VirtualSpace _memory;                          // the memory holding the blocks
+  VirtualSpace _memory_2;
   VirtualSpace _segmap;                          // the memory holding the segment map
 
   size_t       _number_of_committed_segments;

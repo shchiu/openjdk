@@ -462,7 +462,6 @@ void CompileQueue::add(CompileTask* task) {
 // Get the next CompileTask from a CompileQueue
 CompileTask* CompileQueue::get() {
 	
-	printf("hi, there!\n");
 
   MutexLocker locker(lock());
 
@@ -1241,7 +1240,11 @@ CompileTask* CompileBroker::create_compile_task(CompileQueue* queue,
   new_task->initialize(compile_id, method, osr_bci, comp_level,
                        hot_method, hot_count, comment,
                        blocking);
+  fprintf(stderr, "queue before add\n"); 
+  queue->print();
   queue->add(new_task);
+  fprintf(stderr, "queue after add\n");
+  queue->print();
   return new_task;
 }
 
@@ -1361,7 +1364,6 @@ void CompileBroker::compiler_thread_loop() {
         NMethodSweeper::handle_full_code_cache(false);
       }
 
-			queue->print();
       CompileTask* task = queue->get();
 
       // Give compiler threads an extra quanta.  They tend to be bursty and
@@ -1555,7 +1557,11 @@ void CompileBroker::invoke_compiler_on_method(CompileTask* task) {
 
     TraceTime t1("compilation", &time);
 
-    compiler(task->comp_level())->compile_method(&ci_env, target, osr_bci);
+	int level = task->comp_level();
+	AbstractCompiler *temp_compiler = compiler(level);
+	temp_compiler->compile_method(&ci_env, target, osr_bci);
+
+//    compiler(task->comp_level())->compile_method(&ci_env, target, osr_bci);
 
     if (!ci_env.failing() && task->code() == NULL) {
       //assert(false, "compiler should always document failure");

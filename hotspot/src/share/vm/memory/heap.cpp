@@ -25,7 +25,6 @@
 # include "incls/_precompiled.incl"
 # include "incls/_heap.cpp.incl"
 
-
 size_t CodeHeap::header_size() {
   return sizeof(HeapBlock);
 }
@@ -112,12 +111,21 @@ bool CodeHeap::reserve(size_t reserved_size, size_t committed_size,
 
   const size_t rs_align = page_size == (size_t) os::vm_page_size() ? 0 :
     MAX2(page_size, granularity);
-  ReservedCodeSpace rs(r_size, rs_align, rs_align > 0);
+
+  ReservedCodeSpace rs(r_size, rs_align, rs_align > 0, (char*)0x80000000 );
+  ReservedCodeSpace rs2(r_size, rs_align, rs_align > 0);
   os::trace_page_sizes("code heap", committed_size, reserved_size, page_size,
                        rs.base(), rs.size());
+  os::trace_page_sizes("code heap", committed_size, reserved_size, page_size,
+                       rs2.base(), rs2.size());
+
   if (!_memory.initialize(rs, c_size)) {
     return false;
   }
+  if (!_memory_2.initialize(rs2, c_size)) {
+    return false;
+  }
+
 
   on_code_mapping(_memory.low(), _memory.committed_size());
   _number_of_committed_segments = number_of_segments(_memory.committed_size());

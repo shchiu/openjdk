@@ -79,6 +79,8 @@ class ReservedSpace VALUE_OBJ_CLASS_SPEC {
                 char* requested_address,
                 const size_t noaccess_prefix = 0);
   ReservedSpace(size_t size, size_t alignment, bool large, bool executable);
+// new for less than 4G space.
+  ReservedSpace(size_t size, size_t alignment, bool large, char* requested_address, bool executable);
 
   // Accessors
   char*  base()            const { return _base;      }
@@ -134,6 +136,8 @@ class ReservedCodeSpace : public ReservedSpace {
  public:
   // Constructor
   ReservedCodeSpace(size_t r_size, size_t rs_align, bool large);
+// new for less than 4G space.
+  ReservedCodeSpace(size_t r_size, size_t rs_align, bool large, char* requested_address);
 };
 
 // VirtualSpace is data structure for committing a previously reserved address range in smaller chunks.

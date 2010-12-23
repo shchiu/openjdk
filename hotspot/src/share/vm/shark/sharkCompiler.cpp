@@ -60,6 +60,7 @@ SharkCompiler::SharkCompiler()
 
   // Create the memory manager
   _memory_manager = new SharkMemoryManager();
+  fprintf(stderr, "mm:%p\n",_memory_manager);
 
 #if SHARK_LLVM_VERSION >= 27
   // Finetune LLVM for the current host CPU.
@@ -166,6 +167,10 @@ void SharkCompiler::compile_method(ciEnv*    env,
   env->set_dependencies(new Dependencies(env));
 
   // Create the code buffer and builder
+  // (3) code buffer allocating codeBlob memory for code & relocation
+  // info.  The name must be something informative and code_size must
+  // include both code and stubs sizes.
+
   CodeBuffer hscb("Shark", 256 * K, 64 * K);
   hscb.initialize_oop_recorder(env->oop_recorder());
   MacroAssembler *masm = new MacroAssembler(&hscb);
@@ -173,6 +178,10 @@ void SharkCompiler::compile_method(ciEnv*    env,
   SharkBuilder builder(&cb);
 
   // Emit the entry point
+  // malloc in SharkCodeBuffer 
+  // Allocate some space in the buffer and return its address.
+  // This buffer will have been relocated by the time the method
+  // is installed, so you can't inline the result in code.
   SharkEntry *entry = (SharkEntry *) cb.malloc(sizeof(SharkEntry));
 
   // Build the LLVM IR for the method
@@ -195,7 +204,7 @@ void SharkCompiler::compile_method(ciEnv*    env,
 
   ExceptionHandlerTable handler_table;
   ImplicitExceptionTable inc_table;
-	fprintf(stderr, "register method, address of cb :%p\n", &hscb);
+  fprintf(stderr, "register method, hscb:%p, shark cb:%p\n", &hscb, &cb);
   env->register_method(target,
                        entry_bci,
                        &offsets,
@@ -301,10 +310,11 @@ void SharkCompiler::generate_native_code(SharkEntry* entry,
   if (JvmtiExport::should_post_dynamic_code_generated())
     JvmtiExport::post_dynamic_code_generated(name, code_start, code_limit);
 
+
+  fprintf(stderr, "generate native code:%p [%p-%p): %s (%d bytes code)\n",code ,code_start, code_limit, name, code_limit - code_start);
+
+
   // Print debug information, if requested
-
-	fprintf(stderr," [%p-%p): %s (%d bytes code)\n", code_start, code_limit, name, code_limit - code_start);
-
   if (SharkTraceInstalls) {
     tty->print_cr(
       " [%p-%p): %s (%d bytes code)",

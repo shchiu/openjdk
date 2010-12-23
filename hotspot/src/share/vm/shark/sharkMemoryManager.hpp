@@ -26,6 +26,28 @@
 // SharkMemoryManager wraps the LLVM JIT Memory Manager.  We could use
 // this to run our own memory allocation policies, but for now all we
 // use it for is figuring out where the resulting native code ended up.
+/*#include "/usr/include/llvm/System/Memory.h"
+
+class MyMemoryManager;
+
+class JITSlabAllocator : public llvm::SlabAllocator {
+	MyMemoryManager &JMM;
+public:
+	JITSlabAllocator(MyMemoryManager &jmm) : JMM(jmm) { }
+	virtual ~JITSlabAllocator() { }
+	virtual llvm::MemSlab *Allocate(size_t Size);
+	virtual void Deallocate(llvm::MemSlab *Slab);
+};
+
+
+
+class MyMemoryManager : public llvm::JITMemoryManager {
+	// Whether to poison freed memory.
+	bool PoisonMemory;	
+	llvm::sys::MemoryBlock LastSlab;
+};
+
+*/
 
 class SharkMemoryManager : public llvm::JITMemoryManager {
  public:

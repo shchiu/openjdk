@@ -22,6 +22,8 @@
  * questions.
  *
  */
+#include <sys/mman.h>
+#include <errno.h>
 
 class ZeroEntry {
  public:
@@ -59,7 +61,26 @@ class ZeroEntry {
     maybe_deoptimize(
       ((OSREntryFunc) entry_point())(method, osr_buf, (intptr_t) this, THREAD),
       THREAD);
-  }
+
+/*	asm volatile (
+		"mov    -0x8(%%rbp),%%rdx	\n"
+		"mov    -0x20(%%rbp),%%rcx	\n"
+		"mov    -0x18(%%rbp),%%rsi	\n"
+		"mov    -0x10(%%rbp),%%rdi	\n"
+		::
+		);
+
+	//allocate a space for compiled code.
+	void *p = mmap((char*)0x90000000, 4096, PROT_EXEC|PROT_READ|PROT_WRITE ,
+		MAP_PRIVATE | MAP_32BIT | MAP_ANONYMOUS, -1 ,0 );
+	
+	void *entry = entry_point();
+	if( p == MAP_FAILED )
+		perror("mmap");
+	else {
+		if( memcpy( p, entry, 4096 ) < 0 )
+			perror("memcpy");
+*/	}
 
  private:
   static void maybe_deoptimize(int deoptimized_frames, TRAPS) {

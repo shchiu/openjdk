@@ -90,7 +90,10 @@ void CodeBuffer::initialize(csize_t code_size, csize_t locs_size) {
   int slop = (int) CodeSection::end_slop();
 
   assert(blob() == NULL, "only once");
-  set_blob(BufferBlob::create(_name, code_size + (align+slop) * (SECT_LIMIT+1)));
+  BufferBlob* _blob = BufferBlob::create(_name, code_size + (align+slop) * (SECT_LIMIT+1));
+  set_blob(_blob);
+
+//  set_blob(BufferBlob::create(_name, code_size + (align+slop) * (SECT_LIMIT+1)));
   if (blob() == NULL) {
     // The assembler constructor will throw a fatal on an empty CodeBuffer.
     return;  // caller must test this

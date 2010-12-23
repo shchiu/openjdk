@@ -2570,8 +2570,7 @@ static char* anon_mmap(char* requested_addr, size_t bytes, bool fixed) {
 
   // Map uncommitted pages PROT_READ and PROT_WRITE, change access
   // to PROT_EXEC if executable when we commit the page.
-  addr = (char*)::mmap(requested_addr, bytes, PROT_READ|PROT_WRITE,
-                       flags, -1, 0);
+  addr = (char*)::mmap(requested_addr, bytes, PROT_READ|PROT_WRITE, flags, -1, 0);
 
   if (addr != MAP_FAILED) {
     // anon_mmap() should only get called during VM initialization,
